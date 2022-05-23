@@ -1,5 +1,7 @@
 package es.proyectotawspring.entity;
 
+import es.proyectotawspring.dto.GeneroDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -30,5 +32,13 @@ public class GeneroEntity {
     @Override
     public int hashCode() {
         return Objects.hash(genero);
+    }
+
+    public GeneroDTO toDTO() {
+        GeneroDTO g = new GeneroDTO();
+
+        g.setGenero(this.getGenero());
+
+        return g;
     }
 }

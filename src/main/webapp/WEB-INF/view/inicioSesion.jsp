@@ -36,7 +36,7 @@
         </header>
     <body>
         <%= strError %>
-        <form method="POST" action="iniciarSesionServlet" class="row g-3 needs-validation" novalidate>
+        <form method="POST" action="iniciarSesion" class="row g-3 needs-validation" novalidate>
             <span class="input-group-text justify-content-center ">
                 <div class="col-md-3">
 

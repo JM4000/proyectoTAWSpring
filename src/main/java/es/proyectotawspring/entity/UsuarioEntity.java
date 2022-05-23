@@ -1,5 +1,9 @@
 package es.proyectotawspring.entity;
 
+import es.proyectotawspring.dto.GeneroDTO;
+import es.proyectotawspring.dto.TipousuarioDTO;
+import es.proyectotawspring.dto.UsuarioDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -129,5 +133,21 @@ public class UsuarioEntity {
     @Override
     public int hashCode() {
         return Objects.hash(idUsuario, nombreUsuario, contrasena, nombre, apellidos, domicilio, ciudad, edad, genero, tipoUsuario);
+    }
+
+    public UsuarioDTO toDTO() {
+        UsuarioDTO u = new UsuarioDTO();
+        u.setApellidos(this.getApellidos());
+        u.setCiudad(this.getCiudad());
+        u.setContrasena(this.getContrasena());
+        u.setDomicilio(this.getDomicilio());
+        u.setEdad(this.getEdad());
+        u.setGenero(new GeneroDTO(this.getGenero()));
+        u.setIdUsuario(this.getIdUsuario());
+        u.setNombre(this.getNombre());
+        u.setNombreUsuario(this.getNombreUsuario());
+        u.setTipoUsuario(new TipousuarioDTO(this.getTipoUsuario()));
+
+        return u;
     }
 }
