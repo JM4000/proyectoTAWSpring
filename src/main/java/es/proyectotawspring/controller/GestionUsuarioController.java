@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
@@ -44,11 +45,11 @@ public class GestionUsuarioController {
             session.setAttribute("tipoUsuario", usuario.getTipoUsuario().getTipoUsuario());
             switch (usuario.getTipoUsuario().getTipoUsuario()) {
                 case "Administrador":
-                    return "redirect:/Admin/ListaProductosServlet";
+                    return "redirect:/admin/ListaProductos";
                 case "Marketing":
-                    return "redirect:/Marketing/ListasMarketingServlet";
+                    return "redirect:/marketing/ListasMarketingServlet";
                 default:
-                    return "redirect:/Usuario/PaginaPrincipalServlet";
+                    return "redirect:/usuario/PaginaPrincipalServlet";
             }
         }
     }
