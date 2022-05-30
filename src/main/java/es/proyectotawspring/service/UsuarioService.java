@@ -17,25 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
+import static es.proyectotawspring.entity.UsuarioEntity.toDTOList;
+
 @Service
 public class UsuarioService {
 
     private UsuarioRepository usuarioRepository;
-
-    public UsuarioRepository getUsuarioRepository() {
-        return usuarioRepository;
-    }
-
     @Autowired
-    public void setUsuarioRepository(UsuarioRepository usuarioRepository){
+    private void setUsuarioRepository(UsuarioRepository usuarioRepository){
         this.usuarioRepository = usuarioRepository;
     }
 
     private GeneroRepository generoRepository;
-
-    public GeneroRepository getGeneroRepository() {
-        return generoRepository;
-    }
 
     @Autowired
     public void setGeneroRepository(GeneroRepository generoRepository){
@@ -44,27 +37,9 @@ public class UsuarioService {
 
     private TipoUsuarioRepository tipoUsuarioRepository;
 
-    public TipoUsuarioRepository getTipoUsuarioRepository() {
-        return tipoUsuarioRepository;
-    }
-
     @Autowired
     public void setTipoUsuarioRepository(TipoUsuarioRepository tipoUsuarioRepository){
         this.tipoUsuarioRepository = tipoUsuarioRepository;
-    }
-
-    public List<UsuarioDTO> toDTOList(List<UsuarioEntity> lista) {
-
-        List<UsuarioDTO> result = null;
-
-        if (lista != null) {
-            result = new ArrayList<>();
-            for (UsuarioEntity c : lista) {
-                result.add(c.toDTO());
-            }
-        }
-
-        return result;
     }
 
     public void crearUsuario(String username, String pass, String name, String surname, String city, String address, Integer age, String gender, String userType) {
@@ -116,7 +91,7 @@ public class UsuarioService {
                     return toDTOList(this.usuarioRepository.findAllByNombreUsuarioLike(like));
             }
         } else {
-            usuarios = this.toDTOList(this.usuarioRepository.findAll());
+            usuarios = toDTOList(this.usuarioRepository.findAll());
         }
 
         return usuarios;
@@ -169,7 +144,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioDTO> findAll() {
-        return this.toDTOList(this.usuarioRepository.findAll());
+        return toDTOList(this.usuarioRepository.findAll());
     }
     
     public boolean comprobarPermisos(HttpSession sesion, String usuario){
