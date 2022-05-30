@@ -12,11 +12,13 @@ import es.proyectotawspring.dto.UsuarioDTO;
 import es.proyectotawspring.entity.ProductoEntity;
 import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
+@Service
 public class UsuarioService {
 
     private UsuarioRepository usuarioRepository;
@@ -77,8 +79,8 @@ public class UsuarioService {
         usuario.setCiudad(city);
         usuario.setDomicilio(address);
         usuario.setEdad(age);
-        usuario.setGenero(this.generoRepository.findById(gender).toString());
-        usuario.setTipoUsuario(this.tipoUsuarioRepository.findById(userType).toString());
+        usuario.setGeneroByGenero(this.generoRepository.findById(gender).orElse(null));
+        usuario.setTipousuarioByTipoUsuario(this.tipoUsuarioRepository.findById(userType).orElse(null));
 
         this.usuarioRepository.save(usuario);
 
@@ -87,18 +89,35 @@ public class UsuarioService {
     public void remove(int id) {
         this.usuarioRepository.deleteById(id);
     }
-/* ?????????
+/* No tiene sentido esta función
     public void edit(int id) {
-        this.uFacade.edit((this.uFacade).find(id));
+        this.usuarioRepository.save((this.usuarioRepository).findById(id));
     }
 */
     public List<UsuarioDTO> getCategoriasLike(String like, Integer filtro) {
         List<UsuarioDTO> usuarios;
 
         if (like != null) {
-            usuarios = this.toDTOList(this.uFacade.findFiltered(filtro, like));
+            switch (filtro) {
+                case (2): //nombre
+                    return toDTOList(this.usuarioRepository.findAllByNombreLike(like));
+                case (3)://apellido
+                    return toDTOList(this.usuarioRepository.findAllByApellidosLike(like));
+                case (4)://domicilio
+                    return toDTOList(this.usuarioRepository.findAllByDomicilioLike(like));
+                case (5)://ciudad
+                    return toDTOList(this.usuarioRepository.findAllByCiudadLike(like));
+                case (6)://edad
+                    return toDTOList(this.usuarioRepository.findAllByEdad(Integer.parseInt(like)));
+                case (7)://genero
+                    return toDTOList(this.usuarioRepository.findAllByGeneroLike(like));
+                case (8)://tipoUsuario
+                    return toDTOList(this.usuarioRepository.findAllByTipoUsuarioLike(like));
+                default://nombreUsuario
+                    return toDTOList(this.usuarioRepository.findAllByNombreUsuarioLike(like));
+            }
         } else {
-            usuarios = this.toDTOList(this.uFacade.findAll());
+            usuarios = this.toDTOList(this.usuarioRepository.findAll());
         }
 
         return usuarios;
@@ -106,12 +125,12 @@ public class UsuarioService {
 
     public UsuarioDTO find(int id) {
 
-        return this.uFacade.find(id).toDTO();
+        return this.usuarioRepository.findById(id).orElse(null).toDTO();
     }
 
-    public void insertarProducto(int idUsuario, int idProducto) {
+   /* public void insertarProducto(int idUsuario, int idProducto) {
         ProductoEntity producto = this.pFacade.find(idProducto);
-        UsuarioEntity usuario = this.uFacade.find(idUsuario);
+        UsuarioEntity usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
 
         if (!this.pFacade.isProductFavourite(idUsuario, idProducto)) {
             List<UsuarioEntity> usuarios = producto.getUsuarioList();
@@ -123,7 +142,7 @@ public class UsuarioService {
             producto.setUsuarioList(usuarios);
             usuario.setProductoList(productos);
 
-            this.uFacade.edit(usuario);
+            this.usuarioRepository.save(usuario);
             this.pFacade.edit(producto);
         }
 
@@ -131,7 +150,7 @@ public class UsuarioService {
 
     public void eliminarProducto(int idUsuario, int idProducto) {
         ProductoEntity producto = this.pFacade.find(idProducto);
-        UsuarioEntity usuario = this.uFacade.find(idUsuario);
+        UsuarioEntity usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
 
         if (this.pFacade.isProductFavourite(idUsuario, idProducto)) {
             List<UsuarioEntity> usuarios = producto.getUsuarioList();
@@ -140,18 +159,18 @@ public class UsuarioService {
             productos.remove(producto);
             usuarios.remove(usuario);
 
-            this.uFacade.edit(usuario);
+            this.usuarioRepository.save(usuario);
             this.pFacade.edit(producto);
         }
 
     }
-
+*/
     public UsuarioDTO comprobarUsuario(String username, String psw) {
-        return this.uFacade.comprobarUsuario(username, psw).toDTO();
+        return this.usuarioRepository.findUsuarioByNombreUsuarioAndContrasena(username, psw).orElse(null).toDTO();
     }
 
     public List<UsuarioDTO> findAll() {
-        return this.toDTOList(this.uFacade.findAll());
+        return this.toDTOList(this.usuarioRepository.findAll());
     }
     
     public boolean comprobarPermisos(HttpSession sesion, String usuario){
@@ -160,7 +179,7 @@ public class UsuarioService {
     }
 
     public void editarUsuario(int idUsuario,String username, String pass, String name, String surname, String city, String address, int age, String gender, String userType) {
-        UsuarioEntity usuario = this.uFacade.find(idUsuario);
+        UsuarioEntity usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
 
         usuario.setNombreUsuario(username);
         usuario.setContrasena(pass);
@@ -169,9 +188,9 @@ public class UsuarioService {
         usuario.setCiudad(city);
         usuario.setDomicilio(address);
         usuario.setEdad(age);
-        usuario.setGenero(this.gFacade.find(gender));
-        usuario.setTipoUsuario(this.tuFacade.find(userType));
+        usuario.setGeneroByGenero(this.generoRepository.findById(gender).orElse(null));
+        usuario.setTipousuarioByTipoUsuario(this.tipoUsuarioRepository.findById(userType).orElse(null));
 
-        this.uFacade.edit(usuario);
+        this.usuarioRepository.save(usuario);
     }
 }

@@ -1,6 +1,7 @@
 package es.proyectotawspring.controller;
 
 import es.proyectotawspring.dto.UsuarioDTO;
+import es.proyectotawspring.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,38 +21,36 @@ public class GestionUsuarioController {
     }
 
     @Autowired
-    public void setUsuarioService(UsuarioService usuarioService){
+    public void setUsuarioService(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
 
     @GetMapping("/")
-    public String inicio(){
+    public String inicio() {
         return "inicioSesion";
     }
 
     @PostMapping("iniciarSesion")
-    public String iniciarSesion(Model model, HttpSession session, @RequestParam("userName") String username, @RequestParam("inputPassword") String psw){
-        UsuarioDTO usuario = this.usuarioService.comprobarUsuario(username,psw);
+    public String iniciarSesion(Model model, HttpSession session, @RequestParam("userName") String username, @RequestParam("inputPassword") String psw) {
+        UsuarioDTO usuario = this.usuarioService.comprobarUsuario(username, psw);
 
-        if (usuario == null){
+        if (usuario.getIdUsuario() == null) {
             String strError = "El usuario o la clave son incorrectos";
-            model.setAttribute("error", strError);
+            model.addAttribute("error", strError);
             return "inicioSesion";
         } else {
             session.setAttribute("usuario", usuario);
             session.setAttribute("tipoUsuario", usuario.getTipoUsuario().getTipoUsuario());
-            switch(usuario.getTipoUsuario().getTipoUsuario()){
+            switch (usuario.getTipoUsuario().getTipoUsuario()) {
                 case "Administrador":
-                    response.sendRedirect(request.getContextPath() + "/ListaProductosServlet");
-                    break;
+                    return "redirect:/Admin/ListaProductosServlet";
                 case "Marketing":
-                    response.sendRedirect(request.getContextPath() + "/ListasMarketingServlet");
-                    break;
+                    return "redirect:/Marketing/ListasMarketingServlet";
                 default:
-                    response.sendRedirect(request.getContextPath() + "/PaginaPrincipalServlet");
-                    break;
+                    return "redirect:/Usuario/PaginaPrincipalServlet";
             }
+        }
     }
 }
 

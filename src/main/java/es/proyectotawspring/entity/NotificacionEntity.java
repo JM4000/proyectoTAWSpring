@@ -1,7 +1,6 @@
 package es.proyectotawspring.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "notificacion", schema = "proyectotaw", catalog = "")
@@ -13,9 +12,9 @@ public class NotificacionEntity {
     @Basic
     @Column(name = "texto")
     private String texto;
-    @Basic
-    @Column(name = "dueno")
-    private int dueno;
+    @ManyToOne
+    @JoinColumn(name = "dueno", referencedColumnName = "idUsuario", nullable = false)
+    private UsuarioEntity usuarioByDueno;
 
     public int getIdNotificacion() {
         return idNotificacion;
@@ -33,24 +32,31 @@ public class NotificacionEntity {
         this.texto = texto;
     }
 
-    public int getDueno() {
-        return dueno;
-    }
-
-    public void setDueno(int dueno) {
-        this.dueno = dueno;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         NotificacionEntity that = (NotificacionEntity) o;
-        return idNotificacion == that.idNotificacion && dueno == that.dueno && Objects.equals(texto, that.texto);
+
+        if (idNotificacion != that.idNotificacion) return false;
+        if (texto != null ? !texto.equals(that.texto) : that.texto != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idNotificacion, texto, dueno);
+        int result = idNotificacion;
+        result = 31 * result + (texto != null ? texto.hashCode() : 0);
+        return result;
+    }
+
+    public UsuarioEntity getUsuarioByDueno() {
+        return usuarioByDueno;
+    }
+
+    public void setUsuarioByDueno(UsuarioEntity usuarioByDueno) {
+        this.usuarioByDueno = usuarioByDueno;
     }
 }

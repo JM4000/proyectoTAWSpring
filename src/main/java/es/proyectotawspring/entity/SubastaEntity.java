@@ -2,7 +2,6 @@ package es.proyectotawspring.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "subasta", schema = "proyectotaw", catalog = "")
@@ -17,15 +16,15 @@ public class SubastaEntity {
     @Basic
     @Column(name = "fechaCierre")
     private Date fechaCierre;
-    @Basic
-    @Column(name = "mayorPostor")
-    private Integer mayorPostor;
-    @Basic
-    @Column(name = "creador")
-    private int creador;
-    @Basic
-    @Column(name = "producto")
-    private int producto;
+    @ManyToOne
+    @JoinColumn(name = "mayorPostor", referencedColumnName = "idUsuario")
+    private UsuarioEntity usuarioByMayorPostor;
+    @ManyToOne
+    @JoinColumn(name = "creador", referencedColumnName = "idUsuario", nullable = false)
+    private UsuarioEntity usuarioByCreador;
+    @ManyToOne
+    @JoinColumn(name = "producto", referencedColumnName = "idProducto", nullable = false)
+    private ProductoEntity productoByProducto;
 
     public int getIdSubasta() {
         return idSubasta;
@@ -51,40 +50,52 @@ public class SubastaEntity {
         this.fechaCierre = fechaCierre;
     }
 
-    public Integer getMayorPostor() {
-        return mayorPostor;
-    }
-
-    public void setMayorPostor(Integer mayorPostor) {
-        this.mayorPostor = mayorPostor;
-    }
-
-    public int getCreador() {
-        return creador;
-    }
-
-    public void setCreador(int creador) {
-        this.creador = creador;
-    }
-
-    public int getProducto() {
-        return producto;
-    }
-
-    public void setProducto(int producto) {
-        this.producto = producto;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         SubastaEntity that = (SubastaEntity) o;
-        return idSubasta == that.idSubasta && Double.compare(that.predioActual, predioActual) == 0 && creador == that.creador && producto == that.producto && Objects.equals(fechaCierre, that.fechaCierre) && Objects.equals(mayorPostor, that.mayorPostor);
+
+        if (idSubasta != that.idSubasta) return false;
+        if (Double.compare(that.predioActual, predioActual) != 0) return false;
+        if (fechaCierre != null ? !fechaCierre.equals(that.fechaCierre) : that.fechaCierre != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idSubasta, predioActual, fechaCierre, mayorPostor, creador, producto);
+        int result;
+        long temp;
+        result = idSubasta;
+        temp = Double.doubleToLongBits(predioActual);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (fechaCierre != null ? fechaCierre.hashCode() : 0);
+        return result;
+    }
+
+    public UsuarioEntity getUsuarioByMayorPostor() {
+        return usuarioByMayorPostor;
+    }
+
+    public void setUsuarioByMayorPostor(UsuarioEntity usuarioByMayorPostor) {
+        this.usuarioByMayorPostor = usuarioByMayorPostor;
+    }
+
+    public UsuarioEntity getUsuarioByCreador() {
+        return usuarioByCreador;
+    }
+
+    public void setUsuarioByCreador(UsuarioEntity usuarioByCreador) {
+        this.usuarioByCreador = usuarioByCreador;
+    }
+
+    public ProductoEntity getProductoByProducto() {
+        return productoByProducto;
+    }
+
+    public void setProductoByProducto(ProductoEntity productoByProducto) {
+        this.productoByProducto = productoByProducto;
     }
 }

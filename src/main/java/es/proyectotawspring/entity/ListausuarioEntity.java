@@ -1,7 +1,6 @@
 package es.proyectotawspring.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "listausuario", schema = "proyectotaw", catalog = "")
@@ -15,6 +14,12 @@ public class ListausuarioEntity {
     @Id
     @Column(name = "idUsuario")
     private int idUsuario;
+    @ManyToOne
+    @JoinColumn(name = "idlista", referencedColumnName = "idlista", nullable = false)
+    private ListaEntity listaByIdlista;
+    @ManyToOne
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario", nullable = false)
+    private UsuarioEntity usuarioByIdUsuario;
 
     public int getIdlista() {
         return idlista;
@@ -36,12 +41,35 @@ public class ListausuarioEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ListausuarioEntity that = (ListausuarioEntity) o;
-        return idlista == that.idlista && idUsuario == that.idUsuario;
+
+        if (idlista != that.idlista) return false;
+        if (idUsuario != that.idUsuario) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idlista, idUsuario);
+        int result = idlista;
+        result = 31 * result + idUsuario;
+        return result;
+    }
+
+    public ListaEntity getListaByIdlista() {
+        return listaByIdlista;
+    }
+
+    public void setListaByIdlista(ListaEntity listaByIdlista) {
+        this.listaByIdlista = listaByIdlista;
+    }
+
+    public UsuarioEntity getUsuarioByIdUsuario() {
+        return usuarioByIdUsuario;
+    }
+
+    public void setUsuarioByIdUsuario(UsuarioEntity usuarioByIdUsuario) {
+        this.usuarioByIdUsuario = usuarioByIdUsuario;
     }
 }

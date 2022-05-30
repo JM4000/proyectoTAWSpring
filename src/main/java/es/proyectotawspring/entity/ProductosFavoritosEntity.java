@@ -1,7 +1,6 @@
 package es.proyectotawspring.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "productos_favoritos", schema = "proyectotaw", catalog = "")
@@ -15,6 +14,12 @@ public class ProductosFavoritosEntity {
     @Id
     @Column(name = "Producto_idProducto")
     private int productoIdProducto;
+    @ManyToOne
+    @JoinColumn(name = "Usuario_idUsuario", referencedColumnName = "idUsuario", nullable = false)
+    private UsuarioEntity usuarioByUsuarioIdUsuario;
+    @ManyToOne
+    @JoinColumn(name = "Producto_idProducto", referencedColumnName = "idProducto", nullable = false)
+    private ProductoEntity productoByProductoIdProducto;
 
     public int getUsuarioIdUsuario() {
         return usuarioIdUsuario;
@@ -36,12 +41,35 @@ public class ProductosFavoritosEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ProductosFavoritosEntity that = (ProductosFavoritosEntity) o;
-        return usuarioIdUsuario == that.usuarioIdUsuario && productoIdProducto == that.productoIdProducto;
+
+        if (usuarioIdUsuario != that.usuarioIdUsuario) return false;
+        if (productoIdProducto != that.productoIdProducto) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(usuarioIdUsuario, productoIdProducto);
+        int result = usuarioIdUsuario;
+        result = 31 * result + productoIdProducto;
+        return result;
+    }
+
+    public UsuarioEntity getUsuarioByUsuarioIdUsuario() {
+        return usuarioByUsuarioIdUsuario;
+    }
+
+    public void setUsuarioByUsuarioIdUsuario(UsuarioEntity usuarioByUsuarioIdUsuario) {
+        this.usuarioByUsuarioIdUsuario = usuarioByUsuarioIdUsuario;
+    }
+
+    public ProductoEntity getProductoByProductoIdProducto() {
+        return productoByProductoIdProducto;
+    }
+
+    public void setProductoByProductoIdProducto(ProductoEntity productoByProductoIdProducto) {
+        this.productoByProductoIdProducto = productoByProductoIdProducto;
     }
 }

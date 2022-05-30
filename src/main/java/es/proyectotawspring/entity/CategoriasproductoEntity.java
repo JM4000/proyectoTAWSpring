@@ -1,7 +1,6 @@
 package es.proyectotawspring.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "categoriasproducto", schema = "proyectotaw", catalog = "")
@@ -15,6 +14,12 @@ public class CategoriasproductoEntity {
     @Id
     @Column(name = "idCategoria")
     private int idCategoria;
+    @ManyToOne
+    @JoinColumn(name = "idProducto", referencedColumnName = "idProducto", nullable = false)
+    private ProductoEntity productoByIdProducto;
+    @ManyToOne
+    @JoinColumn(name = "idCategoria", referencedColumnName = "idCategoria", nullable = false)
+    private CategoriaEntity categoriaByIdCategoria;
 
     public int getIdProducto() {
         return idProducto;
@@ -36,12 +41,35 @@ public class CategoriasproductoEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         CategoriasproductoEntity that = (CategoriasproductoEntity) o;
-        return idProducto == that.idProducto && idCategoria == that.idCategoria;
+
+        if (idProducto != that.idProducto) return false;
+        if (idCategoria != that.idCategoria) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProducto, idCategoria);
+        int result = idProducto;
+        result = 31 * result + idCategoria;
+        return result;
+    }
+
+    public ProductoEntity getProductoByIdProducto() {
+        return productoByIdProducto;
+    }
+
+    public void setProductoByIdProducto(ProductoEntity productoByIdProducto) {
+        this.productoByIdProducto = productoByIdProducto;
+    }
+
+    public CategoriaEntity getCategoriaByIdCategoria() {
+        return categoriaByIdCategoria;
+    }
+
+    public void setCategoriaByIdCategoria(CategoriaEntity categoriaByIdCategoria) {
+        this.categoriaByIdCategoria = categoriaByIdCategoria;
     }
 }

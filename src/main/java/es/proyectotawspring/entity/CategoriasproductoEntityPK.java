@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Objects;
 
 public class CategoriasproductoEntityPK implements Serializable {
     @Column(name = "idProducto")
@@ -37,12 +36,19 @@ public class CategoriasproductoEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         CategoriasproductoEntityPK that = (CategoriasproductoEntityPK) o;
-        return idProducto == that.idProducto && idCategoria == that.idCategoria;
+
+        if (idProducto != that.idProducto) return false;
+        if (idCategoria != that.idCategoria) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProducto, idCategoria);
+        int result = idProducto;
+        result = 31 * result + idCategoria;
+        return result;
     }
 }

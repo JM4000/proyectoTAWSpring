@@ -1,7 +1,7 @@
 package es.proyectotawspring.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.Collection;
 
 @Entity
 @Table(name = "producto", schema = "proyectotaw", catalog = "")
@@ -22,9 +22,15 @@ public class ProductoEntity {
     @Basic
     @Column(name = "precioSalida")
     private double precioSalida;
-    @Basic
-    @Column(name = "idComprador")
-    private Integer idComprador;
+    @OneToMany(mappedBy = "productoByIdProducto")
+    private Collection<CategoriasproductoEntity> categoriasproductosByIdProducto;
+    @ManyToOne
+    @JoinColumn(name = "idComprador", referencedColumnName = "idUsuario")
+    private UsuarioEntity usuarioByIdComprador;
+    @OneToMany(mappedBy = "productoByProductoIdProducto")
+    private Collection<ProductosFavoritosEntity> productosFavoritosByIdProducto;
+    @OneToMany(mappedBy = "productoByProducto")
+    private Collection<SubastaEntity> subastasByIdProducto;
 
     public int getIdProducto() {
         return idProducto;
@@ -66,24 +72,64 @@ public class ProductoEntity {
         this.precioSalida = precioSalida;
     }
 
-    public Integer getIdComprador() {
-        return idComprador;
-    }
-
-    public void setIdComprador(Integer idComprador) {
-        this.idComprador = idComprador;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ProductoEntity that = (ProductoEntity) o;
-        return idProducto == that.idProducto && Double.compare(that.precioSalida, precioSalida) == 0 && Objects.equals(titulo, that.titulo) && Objects.equals(descripcion, that.descripcion) && Objects.equals(foto, that.foto) && Objects.equals(idComprador, that.idComprador);
+
+        if (idProducto != that.idProducto) return false;
+        if (Double.compare(that.precioSalida, precioSalida) != 0) return false;
+        if (titulo != null ? !titulo.equals(that.titulo) : that.titulo != null) return false;
+        if (descripcion != null ? !descripcion.equals(that.descripcion) : that.descripcion != null) return false;
+        if (foto != null ? !foto.equals(that.foto) : that.foto != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProducto, titulo, descripcion, foto, precioSalida, idComprador);
+        int result;
+        long temp;
+        result = idProducto;
+        result = 31 * result + (titulo != null ? titulo.hashCode() : 0);
+        result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
+        result = 31 * result + (foto != null ? foto.hashCode() : 0);
+        temp = Double.doubleToLongBits(precioSalida);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    public Collection<CategoriasproductoEntity> getCategoriasproductosByIdProducto() {
+        return categoriasproductosByIdProducto;
+    }
+
+    public void setCategoriasproductosByIdProducto(Collection<CategoriasproductoEntity> categoriasproductosByIdProducto) {
+        this.categoriasproductosByIdProducto = categoriasproductosByIdProducto;
+    }
+
+    public UsuarioEntity getUsuarioByIdComprador() {
+        return usuarioByIdComprador;
+    }
+
+    public void setUsuarioByIdComprador(UsuarioEntity usuarioByIdComprador) {
+        this.usuarioByIdComprador = usuarioByIdComprador;
+    }
+
+    public Collection<ProductosFavoritosEntity> getProductosFavoritosByIdProducto() {
+        return productosFavoritosByIdProducto;
+    }
+
+    public void setProductosFavoritosByIdProducto(Collection<ProductosFavoritosEntity> productosFavoritosByIdProducto) {
+        this.productosFavoritosByIdProducto = productosFavoritosByIdProducto;
+    }
+
+    public Collection<SubastaEntity> getSubastasByIdProducto() {
+        return subastasByIdProducto;
+    }
+
+    public void setSubastasByIdProducto(Collection<SubastaEntity> subastasByIdProducto) {
+        this.subastasByIdProducto = subastasByIdProducto;
     }
 }
