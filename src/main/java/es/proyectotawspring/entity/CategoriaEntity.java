@@ -1,30 +1,66 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package es.proyectotawspring.entity;
 
+import es.proyectotawspring.dto.CategoriaDTO;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
-import java.util.Collection;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author juanm
+ */
 @Entity
-@Table(name = "categoria", schema = "proyectotaw", catalog = "")
-public class CategoriaEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "idCategoria")
-    private int idCategoria;
-    @Basic
-    @Column(name = "nombre")
-    private String nombre;
-    @OneToMany(mappedBy = "categoriaByIdCategoria")
-    private Collection<CategoriasfavoritasEntity> categoriasfavoritasByIdCategoria;
-    @OneToMany(mappedBy = "categoriaByIdCategoria")
-    private Collection<CategoriasproductoEntity> categoriasproductosByIdCategoria;
-    @OneToMany(mappedBy = "categoriaByCategoriaIdCategoria")
-    private Collection<ListaEntity> listasByIdCategoria;
+@Table(name="Categoria")
+public class CategoriaEntity implements Serializable {
 
-    public int getIdCategoria() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaidCategoria")
+    private List<ListaEntity> listaList;
+    
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idCategoria")
+    private Integer idCategoria;
+    @Basic(optional = false)
+    @Column(name = "nombre", nullable = false, length = 45)
+    private String nombre;
+    @JoinTable(name = "categoriasproducto", joinColumns = {
+        @JoinColumn(name = "idCategoria", referencedColumnName = "idCategoria")}, inverseJoinColumns = {
+        @JoinColumn(name = "idProducto", referencedColumnName = "idProducto")})
+    @ManyToMany
+    private List<ProductoEntity> productoList;
+    @JoinTable(name = "categoriasfavoritas", joinColumns = {
+        @JoinColumn(name = "idCategoria", referencedColumnName = "idCategoria")}, inverseJoinColumns = {
+        @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")})
+    @ManyToMany
+    private List<UsuarioEntity> usuarioList;
+
+    public CategoriaEntity() {
+    }
+
+    public CategoriaEntity(Integer idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public CategoriaEntity(Integer idCategoria, String nombre) {
+        this.idCategoria = idCategoria;
+        this.nombre = nombre;
+    }
+
+    public Integer getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
+    public void setIdCategoria(Integer idCategoria) {
         this.idCategoria = idCategoria;
     }
 
@@ -36,47 +72,74 @@ public class CategoriaEntity {
         this.nombre = nombre;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    @XmlTransient
+    public List<ProductoEntity> getProductoList() {
+        return productoList;
+    }
 
-        CategoriaEntity that = (CategoriaEntity) o;
+    public void setProductoList(List<ProductoEntity> productoList) {
+        this.productoList = productoList;
+    }
 
-        if (idCategoria != that.idCategoria) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
+    @XmlTransient
+    public List<UsuarioEntity> getUsuarioList() {
+        return usuarioList;
+    }
 
-        return true;
+    public void setUsuarioList(List<UsuarioEntity> usuarioList) {
+        this.usuarioList = usuarioList;
     }
 
     @Override
     public int hashCode() {
-        int result = idCategoria;
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
+        int hash = 0;
+        hash += (idCategoria != null ? idCategoria.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof CategoriaEntity)) {
+            return false;
+        }
+        CategoriaEntity other = (CategoriaEntity) object;
+        if ((this.idCategoria == null && other.idCategoria != null) || (this.idCategoria != null && !this.idCategoria.equals(other.idCategoria))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "proyectoTAW.entity.Categoria[ idCategoria=" + idCategoria + " ]";
+    }
+   
+    public CategoriaDTO toDTO() {
+        
+        CategoriaDTO cat = new CategoriaDTO();
+        cat.setIdCategoria(this.getIdCategoria());
+        cat.setNombre(this.getNombre());
+        
+        return cat;
+    }
+    
+    public static List<CategoriaDTO> toDTOList(List<CategoriaEntity> lista){
+        
+        List<CategoriaDTO> result = new ArrayList<>();
+        for(CategoriaEntity c:lista){
+            result.add(c.toDTO());
+        }
+        
         return result;
     }
 
-    public Collection<CategoriasfavoritasEntity> getCategoriasfavoritasByIdCategoria() {
-        return categoriasfavoritasByIdCategoria;
+    @XmlTransient
+    public List<ListaEntity> getListaList() {
+        return listaList;
     }
 
-    public void setCategoriasfavoritasByIdCategoria(Collection<CategoriasfavoritasEntity> categoriasfavoritasByIdCategoria) {
-        this.categoriasfavoritasByIdCategoria = categoriasfavoritasByIdCategoria;
-    }
-
-    public Collection<CategoriasproductoEntity> getCategoriasproductosByIdCategoria() {
-        return categoriasproductosByIdCategoria;
-    }
-
-    public void setCategoriasproductosByIdCategoria(Collection<CategoriasproductoEntity> categoriasproductosByIdCategoria) {
-        this.categoriasproductosByIdCategoria = categoriasproductosByIdCategoria;
-    }
-
-    public Collection<ListaEntity> getListasByIdCategoria() {
-        return listasByIdCategoria;
-    }
-
-    public void setListasByIdCategoria(Collection<ListaEntity> listasByIdCategoria) {
-        this.listasByIdCategoria = listasByIdCategoria;
+    public void setListaList(List<ListaEntity> listaList) {
+        this.listaList = listaList;
     }
 }

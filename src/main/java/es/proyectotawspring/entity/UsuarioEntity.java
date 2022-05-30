@@ -1,66 +1,89 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package es.proyectotawspring.entity;
 
-import es.proyectotawspring.dto.GeneroDTO;
-import es.proyectotawspring.dto.TipousuarioDTO;
 import es.proyectotawspring.dto.UsuarioDTO;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
-import java.util.Collection;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author juanm
+ */
 @Entity
-@Table(name = "usuario", schema = "proyectotaw", catalog = "")
-public class UsuarioEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name="Usuario")
+public class UsuarioEntity implements Serializable {
+
+    @ManyToMany(mappedBy = "usuarioList")
+    private List<ListaEntity> listaList;
+
+    @ManyToMany(mappedBy = "usuarioList")
+    private List<CategoriaEntity> categoriaList;
+
+    private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "idUsuario")
-    private int idUsuario;
-    @Basic
-    @Column(name = "nombreUsuario")
+    private Integer idUsuario;
+    @Basic(optional = false)
+    @Column(name = "nombreUsuario", nullable = false, length = 45)
     private String nombreUsuario;
-    @Basic
-    @Column(name = "contrasena")
+    @Basic(optional = false)
+    @Column(name = "contrasena", nullable = false, length = 45)
     private String contrasena;
-    @Basic
-    @Column(name = "nombre")
+    @Basic(optional = false)
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
-    @Basic
-    @Column(name = "apellidos")
+    @Basic(optional = false)
+    @Column(name = "apellidos", nullable = false, length = 45)
     private String apellidos;
-    @Basic
-    @Column(name = "domicilio")
+    @Basic(optional = false)
+    @Column(name = "domicilio", nullable = false, length = 45)
     private String domicilio;
-    @Basic
-    @Column(name = "ciudad")
+    @Basic(optional = false)
+    @Column(name = "ciudad", nullable = false, length = 45)
     private String ciudad;
-    @Basic
     @Column(name = "edad")
     private Integer edad;
-    @OneToMany(mappedBy = "usuarioByIdUsuario")
-    private Collection<CategoriasfavoritasEntity> categoriasfavoritasByIdUsuario;
-    @OneToMany(mappedBy = "usuarioByIdUsuario")
-    private Collection<ListausuarioEntity> listausuariosByIdUsuario;
-    @OneToMany(mappedBy = "usuarioByDueno")
-    private Collection<NotificacionEntity> notificacionsByIdUsuario;
-    @OneToMany(mappedBy = "usuarioByIdComprador")
-    private Collection<ProductoEntity> productosByIdUsuario;
-    @OneToMany(mappedBy = "usuarioByUsuarioIdUsuario")
-    private Collection<ProductosFavoritosEntity> productosFavoritosByIdUsuario;
-    @OneToMany(mappedBy = "usuarioByMayorPostor")
-    private Collection<SubastaEntity> subastasByIdUsuario;
-    @OneToMany(mappedBy = "usuarioByCreador")
-    private Collection<SubastaEntity> subastasByIdUsuario_0;
-    @ManyToOne
-    @JoinColumn(name = "genero", referencedColumnName = "Genero", nullable = false)
-    private GeneroEntity generoByGenero;
-    @ManyToOne
-    @JoinColumn(name = "tipoUsuario", referencedColumnName = "tipoUsuario", nullable = false)
-    private TipousuarioEntity tipousuarioByTipoUsuario;
+    @ManyToMany(mappedBy = "usuarioList")
+    private List<ProductoEntity> productoList;
+    @JoinColumn(name = "genero", referencedColumnName = "Genero")
+    @ManyToOne(optional = false)
+    private GeneroEntity genero;
+    @JoinColumn(name = "tipoUsuario", referencedColumnName = "tipoUsuario")
+    @ManyToOne(optional = false)
+    private TipousuarioEntity tipoUsuario;
 
-    public int getIdUsuario() {
+    public UsuarioEntity() {
+    }
+
+    public UsuarioEntity(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public UsuarioEntity(Integer idUsuario, String nombreUsuario, String contrasena, String nombre, String apellidos, String domicilio, String ciudad) {
+        this.idUsuario = idUsuario;
+        this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.domicilio = domicilio;
+        this.ciudad = ciudad;
+    }
+
+    public Integer getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -120,124 +143,99 @@ public class UsuarioEntity {
         this.edad = edad;
     }
 
+    @XmlTransient
+    public List<ProductoEntity> getProductoList() {
+        return productoList;
+    }
+
+    public void setProductoList(List<ProductoEntity> productoList) {
+        this.productoList = productoList;
+    }
+
+    public GeneroEntity getGenero() {
+        return genero;
+    }
+
+    public void setGenero(GeneroEntity genero) {
+        this.genero = genero;
+    }
+
+    public TipousuarioEntity getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(TipousuarioEntity tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+    
+       
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public int hashCode() {
+        int hash = 0;
+        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
+        return hash;
+    }
 
-        UsuarioEntity that = (UsuarioEntity) o;
-
-        if (idUsuario != that.idUsuario) return false;
-        if (nombreUsuario != null ? !nombreUsuario.equals(that.nombreUsuario) : that.nombreUsuario != null)
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof UsuarioEntity)) {
             return false;
-        if (contrasena != null ? !contrasena.equals(that.contrasena) : that.contrasena != null) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (apellidos != null ? !apellidos.equals(that.apellidos) : that.apellidos != null) return false;
-        if (domicilio != null ? !domicilio.equals(that.domicilio) : that.domicilio != null) return false;
-        if (ciudad != null ? !ciudad.equals(that.ciudad) : that.ciudad != null) return false;
-        if (edad != null ? !edad.equals(that.edad) : that.edad != null) return false;
-
+        }
+        UsuarioEntity other = (UsuarioEntity) object;
+        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public int hashCode() {
-        int result = idUsuario;
-        result = 31 * result + (nombreUsuario != null ? nombreUsuario.hashCode() : 0);
-        result = 31 * result + (contrasena != null ? contrasena.hashCode() : 0);
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
-        result = 31 * result + (apellidos != null ? apellidos.hashCode() : 0);
-        result = 31 * result + (domicilio != null ? domicilio.hashCode() : 0);
-        result = 31 * result + (ciudad != null ? ciudad.hashCode() : 0);
-        result = 31 * result + (edad != null ? edad.hashCode() : 0);
-        return result;
+    public String toString() {
+        return nombreUsuario + ", " + nombre + " " + apellidos + ", " + ciudad + ", " + domicilio + ", " + edad + ", " + getGenero().getGenero() + ", " + getTipoUsuario().getTipoUsuario() + ", ";
     }
 
-    public Collection<CategoriasfavoritasEntity> getCategoriasfavoritasByIdUsuario() {
-        return categoriasfavoritasByIdUsuario;
+    @XmlTransient
+    public List<CategoriaEntity> getCategoriaList() {
+        return categoriaList;
     }
 
-    public void setCategoriasfavoritasByIdUsuario(Collection<CategoriasfavoritasEntity> categoriasfavoritasByIdUsuario) {
-        this.categoriasfavoritasByIdUsuario = categoriasfavoritasByIdUsuario;
+    public void setCategoriaList(List<CategoriaEntity> categoriaList) {
+        this.categoriaList = categoriaList;
     }
 
-    public Collection<ListausuarioEntity> getListausuariosByIdUsuario() {
-        return listausuariosByIdUsuario;
-    }
-
-    public void setListausuariosByIdUsuario(Collection<ListausuarioEntity> listausuariosByIdUsuario) {
-        this.listausuariosByIdUsuario = listausuariosByIdUsuario;
-    }
-
-    public Collection<NotificacionEntity> getNotificacionsByIdUsuario() {
-        return notificacionsByIdUsuario;
-    }
-
-    public void setNotificacionsByIdUsuario(Collection<NotificacionEntity> notificacionsByIdUsuario) {
-        this.notificacionsByIdUsuario = notificacionsByIdUsuario;
-    }
-
-    public Collection<ProductoEntity> getProductosByIdUsuario() {
-        return productosByIdUsuario;
-    }
-
-    public void setProductosByIdUsuario(Collection<ProductoEntity> productosByIdUsuario) {
-        this.productosByIdUsuario = productosByIdUsuario;
-    }
-
-    public Collection<ProductosFavoritosEntity> getProductosFavoritosByIdUsuario() {
-        return productosFavoritosByIdUsuario;
-    }
-
-    public void setProductosFavoritosByIdUsuario(Collection<ProductosFavoritosEntity> productosFavoritosByIdUsuario) {
-        this.productosFavoritosByIdUsuario = productosFavoritosByIdUsuario;
-    }
-
-    public Collection<SubastaEntity> getSubastasByIdUsuario() {
-        return subastasByIdUsuario;
-    }
-
-    public void setSubastasByIdUsuario(Collection<SubastaEntity> subastasByIdUsuario) {
-        this.subastasByIdUsuario = subastasByIdUsuario;
-    }
-
-    public Collection<SubastaEntity> getSubastasByIdUsuario_0() {
-        return subastasByIdUsuario_0;
-    }
-
-    public void setSubastasByIdUsuario_0(Collection<SubastaEntity> subastasByIdUsuario_0) {
-        this.subastasByIdUsuario_0 = subastasByIdUsuario_0;
-    }
-
-    public GeneroEntity getGeneroByGenero() {
-        return generoByGenero;
-    }
-
-    public void setGeneroByGenero(GeneroEntity generoByGenero) {
-        this.generoByGenero = generoByGenero;
-    }
-
-    public TipousuarioEntity getTipousuarioByTipoUsuario() {
-        return tipousuarioByTipoUsuario;
-    }
-
-    public void setTipousuarioByTipoUsuario(TipousuarioEntity tipousuarioByTipoUsuario) {
-        this.tipousuarioByTipoUsuario = tipousuarioByTipoUsuario;
-    }
-
-    public UsuarioDTO toDTO(){
+    public UsuarioDTO toDTO() {
+        
         UsuarioDTO u = new UsuarioDTO();
         u.setApellidos(this.getApellidos());
         u.setCiudad(this.getCiudad());
         u.setContrasena(this.getContrasena());
         u.setDomicilio(this.getDomicilio());
         u.setEdad(this.getEdad());
-        u.setGenero(new GeneroDTO(this.getGeneroByGenero().getGenero()));
+        u.setGenero(this.getGenero().toDTO());
         u.setIdUsuario(this.getIdUsuario());
         u.setNombre(this.getNombre());
         u.setNombreUsuario(this.getNombreUsuario());
-        u.setTipoUsuario(new TipousuarioDTO(this.getTipousuarioByTipoUsuario().getTipoUsuario()));
-
+        u.setTipoUsuario(this.getTipoUsuario().toDTO());
+            
         return u;
+    }
+    
+    public static List<UsuarioDTO> toDTOList(List<UsuarioEntity> lista){
+        List<UsuarioDTO> result = new ArrayList<>();
+        for(UsuarioEntity c:lista){
+            result.add(c.toDTO());
+        }
+        
+        return result;
+    }
+
+    @XmlTransient
+    public List<ListaEntity> getListaList() {
+        return listaList;
+    }
+
+    public void setListaList(List<ListaEntity> listaList) {
+        this.listaList = listaList;
     }
 }

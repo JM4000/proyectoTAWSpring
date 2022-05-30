@@ -9,7 +9,6 @@ import es.proyectotawspring.dao.GeneroRepository;
 import es.proyectotawspring.dao.TipoUsuarioRepository;
 import es.proyectotawspring.dao.UsuarioRepository;
 import es.proyectotawspring.dto.UsuarioDTO;
-import es.proyectotawspring.entity.ProductoEntity;
 import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,8 +78,8 @@ public class UsuarioService {
         usuario.setCiudad(city);
         usuario.setDomicilio(address);
         usuario.setEdad(age);
-        usuario.setGeneroByGenero(this.generoRepository.findById(gender).orElse(null));
-        usuario.setTipousuarioByTipoUsuario(this.tipoUsuarioRepository.findById(userType).orElse(null));
+        usuario.setGenero(this.generoRepository.findById(gender).orElse(null));
+        usuario.setTipoUsuario(this.tipoUsuarioRepository.findById(userType).orElse(null));
 
         this.usuarioRepository.save(usuario);
 
@@ -188,8 +187,8 @@ public class UsuarioService {
         usuario.setCiudad(city);
         usuario.setDomicilio(address);
         usuario.setEdad(age);
-        usuario.setGeneroByGenero(this.generoRepository.findById(gender).orElse(null));
-        usuario.setTipousuarioByTipoUsuario(this.tipoUsuarioRepository.findById(userType).orElse(null));
+        usuario.setGenero(this.generoRepository.findById(gender).orElse(null));
+        usuario.setTipoUsuario(this.tipoUsuarioRepository.findById(userType).orElse(null));
 
         this.usuarioRepository.save(usuario);
     }
