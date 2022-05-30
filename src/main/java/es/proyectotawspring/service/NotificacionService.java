@@ -5,14 +5,13 @@
  */
 package es.proyectotawspring.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.proyectotawspring.dao.NotificacionRepository;
 import es.proyectotawspring.dto.NotificacionDTO;
 import es.proyectotawspring.entity.NotificacionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static es.proyectotawspring.entity.NotificacionEntity.toDTOList;
 

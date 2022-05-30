@@ -2,7 +2,6 @@ package es.proyectotawspring.dao;
 
 import es.proyectotawspring.entity.SubastaEntity;
 import es.proyectotawspring.entity.UsuarioEntity;
-import es.proyectotawspring.service.SubastaService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

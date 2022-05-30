@@ -5,14 +5,14 @@
  */
 package es.proyectotawspring.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.proyectotawspring.dao.CategoriaRepository;
 import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.entity.CategoriaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static es.proyectotawspring.entity.CategoriaEntity.toDTOList;
 

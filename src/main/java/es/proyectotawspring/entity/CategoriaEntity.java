@@ -7,11 +7,11 @@ package es.proyectotawspring.entity;
 
 import es.proyectotawspring.dto.CategoriaDTO;
 
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *

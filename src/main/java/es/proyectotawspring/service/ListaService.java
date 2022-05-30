@@ -5,9 +5,6 @@
  */
 package es.proyectotawspring.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.proyectotawspring.dao.CategoriaRepository;
 import es.proyectotawspring.dao.ListaRepository;
 import es.proyectotawspring.dao.UsuarioRepository;
@@ -17,6 +14,8 @@ import es.proyectotawspring.entity.ListaEntity;
 import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static es.proyectotawspring.entity.ListaEntity.toDTOList;
 

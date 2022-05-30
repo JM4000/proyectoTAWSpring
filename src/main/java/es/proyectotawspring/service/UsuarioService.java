@@ -13,9 +13,8 @@ import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import static es.proyectotawspring.entity.UsuarioEntity.toDTOList;
 

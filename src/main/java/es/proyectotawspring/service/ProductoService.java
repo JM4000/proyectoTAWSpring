@@ -5,9 +5,6 @@
  */
 package es.proyectotawspring.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.proyectotawspring.dao.ProductoRepository;
 import es.proyectotawspring.dao.UsuarioRepository;
 import es.proyectotawspring.dto.ProductoDTO;
@@ -16,6 +13,8 @@ import es.proyectotawspring.entity.ProductoEntity;
 import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static es.proyectotawspring.entity.ProductoEntity.toDTOList;
 
@@ -43,7 +42,6 @@ public class ProductoService {
         this.productoRepository = productoRepository;
     }
 
-
     public List<ProductoDTO> findFiltered(Integer filtro, String like) {
 
         List<ProductoDTO> productos;
@@ -51,7 +49,7 @@ public class ProductoService {
 
             switch (filtro) {
                 case (1):
-                    return toDTOList(this.productoRepository.findAllByTituloLike(like).orElse(null));
+                    return toDTOList(this.productoRepository.findAllByTituloLike("%"+like+"%").orElse(null));
 
                 default:
                     return toDTOList(this.productoRepository.findByCategoria("%"+like+"%").orElse(null));

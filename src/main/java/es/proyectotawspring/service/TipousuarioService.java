@@ -5,13 +5,12 @@
  */
 package es.proyectotawspring.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.proyectotawspring.dao.TipoUsuarioRepository;
 import es.proyectotawspring.dto.TipousuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static es.proyectotawspring.entity.TipousuarioEntity.toDTOList;
 

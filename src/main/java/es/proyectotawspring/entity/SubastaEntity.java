@@ -6,13 +6,12 @@
 package es.proyectotawspring.entity;
 
 import es.proyectotawspring.dto.SubastaDTO;
-import es.proyectotawspring.dto.TipousuarioDTO;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
 
 /**
  *
