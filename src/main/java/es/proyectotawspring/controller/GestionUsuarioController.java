@@ -48,7 +48,7 @@ public class GestionUsuarioController {
                 case "Marketing":
                     return "redirect:/marketing/ListasMarketingServlet";
                 default:
-                    return "redirect:/usuario/PaginaPrincipalServlet";
+                    return "redirect:/usuario/"+usuario.getIdUsuario() + "/misProductos";
             }
         }
     }

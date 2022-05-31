@@ -106,6 +106,12 @@ public class ProductoService {
        this.productoRepository.save(producto);
        
     }
+
+    public List<ProductoDTO> getProductosVendedor(int idUsuario){
+        return toDTOList(this.productoRepository.getProductosVendedor(idUsuario).orElse(null));
+    }
+
+
   
      
 }
