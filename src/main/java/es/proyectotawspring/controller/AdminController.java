@@ -91,4 +91,14 @@ public class AdminController extends ProyectoTawController{
             return "editorProducto";
         }
     }
+
+    @GetMapping("/{id}/EliminarProducto")
+    public String eliminarProducto(Model model,HttpSession session, @PathVariable("id") Integer id){
+        if(super.redirigirUsuario("Administrador", session)){
+            return "redirect:/";
+        }else{
+            this.productoService.remove(id);
+            return "redirect:/admin/ListaProductos";
+        }
+    }
 }
