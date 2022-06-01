@@ -21,7 +21,7 @@ public class ProductoDTO {
     private String foto;
     private double precioSalida;
     private UsuarioDTO comprador;
-    private List<CategoriaDTO> categoriaList;
+    private List<String> categoriaList;
 
     public ProductoDTO() {
     }
@@ -94,18 +94,18 @@ public class ProductoDTO {
         this.usuarioList = usuarioList;
     }
     
-    public List<CategoriaDTO> getCategoriaList(){
+    public List<String> getCategoriaList(){
         return categoriaList;
     }
     
-    public void setCategoriaList(List<CategoriaDTO> categoriaList){
+    public void setCategoriaList(List<String> categoriaList){
         this.categoriaList = categoriaList;
     }
     
     public boolean containsCategory(CategoriaDTO cat){
         boolean result = false;
-        for(CategoriaDTO c: this.getCategoriaList()){
-            if(cat.getNombre().equalsIgnoreCase(c.getNombre())) result = true;
+        for(String c: this.getCategoriaList()){
+            if(cat.getNombre().equalsIgnoreCase(c)) result = true;
         }
         return result;
     }

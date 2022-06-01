@@ -39,7 +39,7 @@
                 %>
                 <li><a href="<%= request.getContextPath()%>/ListaUsuariosServlet?filtro=1"
                        class="nav-link px-2 link-dark">Clientes</a></li>
-                <li><a href="<%= request.getContextPath()%>/ListaProductosServlet" class="nav-link px-2 link-dark">Productos</a>
+                <li><a href="" class="nav-link px-2 link-dark">Productos</a>
                 </li>
                 <li><a href="<%= request.getContextPath()%>/EditorCategoriasServlet" class="nav-link px-2 link-dark">Categorías</a>
                 </li>
@@ -92,9 +92,9 @@
                 <img class="fluid" src="<%= producto.getFoto()%>">
                 <li class="p-2"></li>
                 <a type="button" class="btn btn-warning"
-                   href="/admin/EditarProductoServlet/<%= producto.getIdProducto()%>">Editar</a>
+                   href="/admin/<%= producto.getIdProducto()%>/EditarProducto">Editar</a>
                 <a type="button" class="btn btn-danger"
-                   href="/admin/EliminarProductoServlet/<%= producto.getIdProducto()%>">Eliminar</a>
+                   href="/admin/<%= producto.getIdProducto()%>/EliminarProducto">Eliminar</a>
                 </li>
             </ul>
         </div>

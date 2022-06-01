@@ -164,12 +164,19 @@ public class ProductoEntity implements Serializable {
     
     public ProductoDTO toDTO() {
         ProductoDTO pr = new ProductoDTO();
+
+        List<String> categorias = new ArrayList<>();
+
+        for (CategoriaEntity c: this.getCategoriaList()) {
+            categorias.add(c.getNombre());
+        }
+
         pr.setDescripcion(this.getDescripcion());
         pr.setFoto(this.getFoto());
         pr.setIdProducto(this.getIdProducto());
         pr.setPrecioSalida(this.getPrecioSalida());
         pr.setTitulo(this.getTitulo());
-        pr.setCategoriaList(CategoriaEntity.toDTOList(this.getCategoriaList()));
+        pr.setCategoriaList(categorias);
         if (this.getIdComprador() != null){
             pr.setComprador(this.getIdComprador().toDTO());
         }

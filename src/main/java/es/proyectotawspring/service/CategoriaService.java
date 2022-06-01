@@ -30,6 +30,14 @@ public class CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
 
+    public List<CategoriaEntity> toEntityList(List<CategoriaDTO> lista){
+        List<CategoriaEntity> result = new ArrayList<>();
+        for(CategoriaDTO c:lista){
+            result.add(this.categoriaRepository.getById(c.getIdCategoria()));
+        }
+
+        return result;
+    }
 
     public List<CategoriaDTO> getCategoriasLike(String busqueda) {
 
@@ -38,6 +46,18 @@ public class CategoriaService {
         result = this.categoriaRepository.findAllByNombre(busqueda);
 
         return toDTOList(result);
+
+    }
+
+    public List<CategoriaEntity> getCategorias(List<String> busqueda) {
+
+        List<CategoriaEntity> result = new ArrayList<>();
+
+        for (String s: busqueda) {
+            result.add(this.categoriaRepository.getByNombre(s));
+        }
+
+        return result;
 
     }
 

@@ -65,7 +65,7 @@ ProductoService {
     }
 
     public ProductoDTO find(int id) {
-        return this.productoRepository.findById(id).orElse(null).toDTO();
+        return this.productoRepository.getById(id).toDTO();
     }
     
     public List<ProductoDTO> findAll() {
