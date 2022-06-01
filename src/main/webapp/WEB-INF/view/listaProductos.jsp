@@ -35,13 +35,13 @@
                        class="nav-link px-2 link-secondary">Página Principal</a></li>
                 <%
                     UsuarioDTO u = (UsuarioDTO) session.getAttribute("usuario");
-                    if (u.getTipoUsuario().getTipoUsuario().toString().equals("Administrador")) {
+                    if (u.getTipoUsuario().getTipoUsuario().equals("Administrador")) {
                 %>
-                <li><a href="<%= request.getContextPath()%>/ListaUsuarios"
+                <li><a href="/admin/ListaUsuarios"
                        class="nav-link px-2 link-dark">Clientes</a></li>
                 <li><a href="" class="nav-link px-2 link-dark">Productos</a>
                 </li>
-                <li><a href="<%= request.getContextPath()%>/EditorCategoriasServlet" class="nav-link px-2 link-dark">Categorías</a>
+                <li><a href="/admin/EditorCategoriasServlet" class="nav-link px-2 link-dark">Categorías</a>
                 </li>
                 <% } %>
             </ul>

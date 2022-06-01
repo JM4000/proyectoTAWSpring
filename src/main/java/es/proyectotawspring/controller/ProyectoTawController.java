@@ -9,11 +9,11 @@ import javax.servlet.http.HttpSession;
 public abstract class ProyectoTawController extends HttpServlet {
 
     private UsuarioService usuarioService;
-    public UsuarioService getCustomerService() {
+    public UsuarioService getUsuarioService() {
         return usuarioService;
     }
     @Autowired
-    public void setCustomerService(UsuarioService usuarioService) {
+    public void setUsuarioService(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 

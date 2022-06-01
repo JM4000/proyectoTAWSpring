@@ -67,7 +67,7 @@ public class UsuarioService {
         this.usuarioRepository.save((this.usuarioRepository).findById(id));
     }
 */
-    public List<UsuarioDTO> getCategoriasLike(String like, Integer filtro) {
+    public List<UsuarioDTO> getUsuariosLike(String like, Integer filtro) {
         List<UsuarioDTO> usuarios;
 
         if (like != null) {

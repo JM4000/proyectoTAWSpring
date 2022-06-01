@@ -55,8 +55,6 @@ public class AdminController extends ProyectoTawController{
             return "redirect:/";
         }else{
 
-            System.out.println(busqueda.toString());
-
             List<ProductoDTO> productos;
             String like = (String) busqueda.getBusqueda();
             Integer filtro = busqueda.getFiltro();
@@ -65,6 +63,24 @@ public class AdminController extends ProyectoTawController{
 
             model.addAttribute("productos", productos);
             return "listaProductos";
+        }
+    }
+    @PostMapping("/BusquedaUsuarios")
+    public String buscarUsuarios(Model model, HttpSession session, @ModelAttribute("busqueda") Busqueda busqueda){
+        if(super.redirigirUsuario("Administrador", session)){
+            return "redirect:/";
+        }else{
+
+            List<UsuarioDTO> usuarios;
+            String like = (String) busqueda.getBusqueda();
+            Integer filtro = busqueda.getFiltro();
+
+            usuarios = super.getUsuarioService().getUsuariosLike(like, filtro);
+
+            model.addAttribute("usuarios", usuarios);
+            model.addAttribute("busqueda", new Busqueda());
+            
+            return "editorUsuarios";
         }
     }
 
@@ -99,6 +115,17 @@ public class AdminController extends ProyectoTawController{
         }else{
             this.productoService.remove(id);
             return "redirect:/admin/ListaProductos";
+        }
+    }
+
+    @GetMapping("/ListaUsuarios")
+    public String listaUsuarios(Model model, HttpSession session){
+        if(super.redirigirUsuario("Administrador", session)){
+            return "redirect:/";
+        }else{
+            model.addAttribute("usuarios", super.getUsuarioService().findAll());
+            model.addAttribute("busqueda", new Busqueda());
+            return "editorUsuarios";
         }
     }
 }

@@ -111,6 +111,6 @@ public class UsuarioDTO {
 
     @Override
     public String toString() {
-        return nombreUsuario + ", " + nombre + " " + apellidos + ", " + ciudad + ", " + domicilio + ", " + edad + ", " + this.getGenero().getGenero() + ", " + this.getTipoUsuario().getTipoUsuario() + ", ";
+        return nombreUsuario + ", " + nombre + " " + apellidos + ", " + ciudad + ", " + domicilio + ", " + edad + ", " + this.getGenero().getGenero() + ", " + this.getTipoUsuario().getTipoUsuario();
     }
 }
