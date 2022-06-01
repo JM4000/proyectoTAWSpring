@@ -75,7 +75,7 @@ public class ListaService {
         if (null != nombre) {
             ListaEntity lista = new ListaEntity();
             lista.setNombre(nombre);
-            CategoriaEntity nuevaCategoria = this.categoriaRepository.findAllByNombreLike(categoria).get(0);
+            CategoriaEntity nuevaCategoria = this.categoriaRepository.findAllByNombre(categoria).get(0);
             lista.setCategoriaidCategoria(nuevaCategoria);
             this.listaRepository.save(lista);
         }

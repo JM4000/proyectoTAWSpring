@@ -50,10 +50,10 @@ ProductoService {
 
             switch (filtro) {
                 case (1):
-                    return toDTOList(this.productoRepository.findAllByTituloLike("%"+like+"%").orElse(null));
+                    return toDTOList(this.productoRepository.findAllByTituloLike(like).orElse(null));
 
                 default:
-                    return toDTOList(this.productoRepository.findByCategoria("%"+like+"%").orElse(null));
+                    return toDTOList(this.productoRepository.findByCategoriaLike(like).orElse(null));
 
             }
 

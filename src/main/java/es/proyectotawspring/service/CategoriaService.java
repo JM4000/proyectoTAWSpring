@@ -35,7 +35,7 @@ public class CategoriaService {
 
         List<CategoriaEntity> result;
 
-        result = this.categoriaRepository.findAllByNombreLike(busqueda);
+        result = this.categoriaRepository.findAllByNombre(busqueda);
 
         return toDTOList(result);
 
