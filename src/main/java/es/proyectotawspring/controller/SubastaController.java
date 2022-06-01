@@ -12,12 +12,12 @@ public class SubastaController {
 
     @GetMapping("/{idProducto}/EditarSubasta")
     public String doEditarSubasta(){
-
+        return "/";
     }
 
     @GetMapping("/{idProducto}/EliminarSubasta")
     public String doBorrarSubasta(){
-
+            return "/";
     }
 
 

@@ -26,7 +26,8 @@ import static es.proyectotawspring.entity.ProductoEntity.toDTOList;
  * los 3 ultimos
  */
 @Service
-public class ProductoService {
+public class
+ProductoService {
 
     private UsuarioRepository usuarioRepository;
 
@@ -45,7 +46,7 @@ public class ProductoService {
     public List<ProductoDTO> findFiltered(Integer filtro, String like) {
 
         List<ProductoDTO> productos;
-        if (like != null) {
+        if (like != null && !like.isEmpty()) {
 
             switch (filtro) {
                 case (1):
