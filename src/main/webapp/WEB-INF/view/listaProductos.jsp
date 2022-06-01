@@ -37,7 +37,7 @@
                     UsuarioDTO u = (UsuarioDTO) session.getAttribute("usuario");
                     if (u.getTipoUsuario().getTipoUsuario().toString().equals("Administrador")) {
                 %>
-                <li><a href="<%= request.getContextPath()%>/ListaUsuariosServlet?filtro=1"
+                <li><a href="<%= request.getContextPath()%>/ListaUsuarios"
                        class="nav-link px-2 link-dark">Clientes</a></li>
                 <li><a href="" class="nav-link px-2 link-dark">Productos</a>
                 </li>
@@ -52,7 +52,7 @@
                     <img src="/Images/list.svg" alt="No File" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="<%= request.getContextPath()%>/CerrarSesionServlet">Cerrar
+                    <li><a class="dropdown-item" href="/CerrarSesion">Cerrar
                         Sesión</a></li>
                 </ul>
             </div>

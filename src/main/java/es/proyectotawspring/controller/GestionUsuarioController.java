@@ -52,6 +52,12 @@ public class GestionUsuarioController {
             }
         }
     }
+
+    @GetMapping("CerrarSesion")
+    public String cerrarSesion(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
 }
 
 
