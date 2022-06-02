@@ -54,12 +54,12 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="container align-items-right">
-                    <form class="d-flex" action="${pageContext.request.contextPath}/BusquedaCategoriaServlet"
-                          method="get">
-                        <input class="form-control me-2" type="search" autocomplete="off" placeholder="Busqueda..."
-                               aria-label="Search" name="busqueda">
+                    <form:form class="d-flex" action="/admin/BusquedaCategorias"
+                          method="post" modelAttribute="busqueda">
+                        <form:input class="form-control me-2" type="search" autocomplete="off" placeholder="Busqueda..."
+                               aria-label="Search" name="busqueda" path="busqueda"/>
                         <button class="btn btn-outline-success" type="submit">Buscar</button>
-                    </form>
+                    </form:form>
                 </div>
 
                 <div class="container p-3">

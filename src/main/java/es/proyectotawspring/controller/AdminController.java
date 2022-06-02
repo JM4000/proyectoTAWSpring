@@ -108,6 +108,21 @@ public class AdminController extends ProyectoTawController {
         }
     }
 
+    @PostMapping("/BusquedaCategorias")
+    public String buscarCategorias(Model model, HttpSession session, @ModelAttribute("busqueda") Busqueda busqueda) {
+        if (super.redirigirUsuario("Administrador", session)) {
+            return "redirect:/";
+        } else {
+            String like = (String) busqueda.getBusqueda();
+
+            model.addAttribute("categorias", this.categoriaService.getCategoriasLike(like));
+            model.addAttribute("nuevo",new CategoriaDTO());
+            model.addAttribute("busqueda", busqueda);
+
+            return "editorCategorias";
+        }
+    }
+
     @PostMapping("/GuardarProducto")
     public String guardarProducto(@ModelAttribute("producto") ProductoDTO p, HttpSession session) {
         if (super.redirigirUsuario("Administrador", session)) {
@@ -205,6 +220,7 @@ public class AdminController extends ProyectoTawController {
 
             model.addAttribute("categorias", this.categoriaService.findAll());
             model.addAttribute("nuevo",new CategoriaDTO());
+            model.addAttribute("busqueda", new Busqueda());
             return "editorCategorias";
         }
     }
