@@ -166,4 +166,21 @@ public class UsuarioService {
 
         this.usuarioRepository.save(usuario);
     }
+
+    public void save(UsuarioDTO us) {
+        UsuarioEntity u = new UsuarioEntity();
+
+        u.setTipoUsuario(this.tipoUsuarioRepository.findById(us.getTipoUsuario().getTipoUsuario()).orElse(null));
+        u.setGenero(this.generoRepository.findById(us.getGenero().getGenero()).orElse(null));
+        u.setEdad(us.getEdad());
+        u.setDomicilio(us.getDomicilio());
+        u.setCiudad(us.getCiudad());
+        u.setApellidos(us.getApellidos());
+        u.setNombre(us.getNombre());
+        u.setContrasena(us.getContrasena());
+        u.setIdUsuario(us.getIdUsuario());
+        u.setNombreUsuario(us.getNombre());
+
+        this.usuarioRepository.save(u);
+    }
 }

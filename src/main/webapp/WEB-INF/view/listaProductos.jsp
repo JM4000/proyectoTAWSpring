@@ -41,7 +41,7 @@
                        class="nav-link px-2 link-dark">Clientes</a></li>
                 <li><a href="" class="nav-link px-2 link-dark">Productos</a>
                 </li>
-                <li><a href="/admin/EditorCategoriasServlet" class="nav-link px-2 link-dark">Categorías</a>
+                <li><a href="/admin/EditorCategorias" class="nav-link px-2 link-dark">Categorías</a>
                 </li>
                 <% } %>
             </ul>

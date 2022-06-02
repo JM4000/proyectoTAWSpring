@@ -78,7 +78,7 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="container align-items-right">
-                    <a href="/admin/NuevoUsuario" class="btn btn-outline-success">Crear Usuario</a>
+                    <a href="/admin/-1/EditarUsuario" class="btn btn-outline-success">Crear Usuario</a>
                 </div>
             </div>
         </div>
@@ -96,9 +96,7 @@
                 <li class="list-group-item col-8"><%= usuario.toString()%>
                 </li>
                 <li class="p-2">
-                    <button type="submit" name="id" value="<%=usuario.getIdUsuario()%>/" class="btn btn-warning">
-                        Editar
-                    </button>
+                    <a type="button"  href="/admin/<%=usuario.getIdUsuario()%>/EditarUsuario" class="btn btn-warning">Editar</a>
                     <a type="button" class="btn btn-danger" href="/admin/<%=usuario.getIdUsuario()%>/EliminarUsuario">Eliminar</a>
                 </li>
             </ul>

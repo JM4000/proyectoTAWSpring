@@ -75,10 +75,10 @@ public class CategoriaService {
         return toDTOList(this.categoriaRepository.findAll());
     }
 
-    public void editarCategoria(String id, String edit) {
+    public void editarCategoria(Integer id, String edit) {
 
         if (id != null && edit != null) {
-            CategoriaEntity cat = this.categoriaRepository.findById(Integer.parseInt(id)).orElse(null);
+            CategoriaEntity cat = this.categoriaRepository.findById(id).orElse(null);
             cat.setNombre(edit);
             this.categoriaRepository.save(cat);
         }
