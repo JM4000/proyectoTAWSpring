@@ -81,7 +81,7 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="container align-items-right">
-                    <form class="d-flex" action="marketing/nuevaLista" method="post">
+                    <form class="d-flex" action="/marketing/nuevaLista" method="post">
                         <input class="form-control me-2" type="text"autocomplete="off" placeholder="Nueva Lista" aria-label="New" name="nombre">
                         <select class="form-control me-2" name="categoria">
                             <%    List<CategoriaDTO> categorias = (List) request.getAttribute("categorias");
