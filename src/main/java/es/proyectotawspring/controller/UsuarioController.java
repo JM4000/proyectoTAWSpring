@@ -1,6 +1,7 @@
 package es.proyectotawspring.controller;
 
 
+import es.proyectotawspring.Util.FiltroPaginaPrincipal;
 import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.dto.ProductoDTO;
 import es.proyectotawspring.dto.SubastaDTO;
@@ -75,50 +76,55 @@ public class UsuarioController extends ProyectoTawController {
 
 
         List <SubastaDTO> subastas = this.subastaService.SubastaActiva("","");
+        FiltroPaginaPrincipal filtroPaginaPrincipal = new FiltroPaginaPrincipal();
 
+        filtroPaginaPrincipal.setCategoriaNombre(categorias.get(0).getNombre());
 
         model.addAttribute("categorias",categorias);
+        model.addAttribute("subastas",subastas);
+        model.addAttribute("filtroPaginaPrincipal",filtroPaginaPrincipal );
 
         model.addAttribute("listaTipo",listaTipo);
         model.addAttribute("fav",fav);
         model.addAttribute("comp",comp);
 
-        model.addAttribute("subastas",subastas);
+
         return "paginaPrincipal";
 
     }
     @GetMapping("{id}/filtroPaginaPrincipal")
-    public String doFiltrarPaginaPrincipal(@PathVariable("id") Integer id, @ModelAttribute("subasta") SubastaDTO subasta ,Model model, HttpSession session){
-        /*
+    public String doFiltrarPaginaPrincipal(@PathVariable("id") int id, @ModelAttribute("filtroPaginaPrincipal") FiltroPaginaPrincipal filtroPaginaPrincipal ,Model model, HttpSession session){
+
         //DATOS
         //-----------------------------------------------------------------
         Boolean fav=false,comp=false;
         String listaTipo = "PRODUCTOS EN SUBASTA ";
         List <CategoriaDTO> categorias = this.categoriaService.findAll();
 
-        //String filtro = request.getParameter("filtro");
+        String filtro = filtroPaginaPrincipal.getFiltro();
 
-        String categoria = request.getParameter("categoria");
+        String categoria = filtroPaginaPrincipal.getCategoriaNombre();
+
         if (categoria == null)categoria="";
 
-        String titulo = request.getParameter("busqueda");
+        String titulo = filtroPaginaPrincipal.getBusqueda();
         if (titulo == null)titulo = "";
 
-        String id = request.getParameter("id");
 
 
-        List <SubastaDTO> subastas = this.ss.SubastaActiva(titulo,categoria);
+
+        List <SubastaDTO> subastas = this.subastaService.SubastaActiva(titulo,categoria);
 
 
         //FILTROS
         //-----------------------------------------------------------------
 
         if (filtro.equals("favoritos")){
-            subastas = this.ss.SubastaProductosFavoritos(new Integer (id),titulo,categoria);
+            subastas = this.subastaService.SubastaProductosFavoritos(id,titulo,categoria);
             listaTipo = "PRODUCTOS DE SUBASTAS EN FAVORITO " ;
             fav=true;
         } else if (filtro.equals("comprados")){
-            subastas = this.ss.SubastaProductosComprados(new Integer (id),titulo,categoria);
+            subastas = this.subastaService.SubastaProductosComprados(new Integer (id),titulo,categoria);
             listaTipo = "PRODUCTOS YA COMPRADOS " + categoria;
             comp=true;
         }
@@ -126,16 +132,16 @@ public class UsuarioController extends ProyectoTawController {
         if(!titulo.equals(""))listaTipo+= " QUE CONTENGAN  '"  + titulo.toUpperCase() +"' ";
 
         //-----------------------------------------------------------------
-        request.setAttribute("categorias",categorias);
+        model.addAttribute("categorias",categorias);
 
-        request.setAttribute("listaTipo",listaTipo);
-        request.setAttribute("fav",fav);
-        request.setAttribute("comp",comp);
+        model.addAttribute("listaTipo",listaTipo);
+        model.addAttribute("fav",fav);
+        model.addAttribute("comp",comp);
 
-        request.setAttribute("subastas",subastas);
-        request.getRequestDispatcher("/WEB-INF/jsp/paginaPrincipal.jsp").forward(request,response);
-        */
-        return null;
+        model.addAttribute("subastas",subastas);
+
+
+        return "paginaPrincipal";
     }
 
 

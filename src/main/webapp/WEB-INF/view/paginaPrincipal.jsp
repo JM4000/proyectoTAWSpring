@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : paginaPrincipal
     Created on : 26-abr-2022, 10:44:54
@@ -84,6 +85,29 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="input-group-prepend">
+                    <form:form action="/usuario/<%=user.getIdUsuario()%>/filtoPaginaPrincipal" method="post" modelAttribute="filtroPaginaPrincipal">
+                        <form:select path="filtro" class="custom-select" name="filtro" type="button" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+
+                            <form:option selected="true" value="todos">Todos los productos</form:option>
+                            <form:option value="favoritos">Favoritos</form:option>
+                            <form:option value="comprados">Comprados</form:option>
+
+                        </form:select>
+
+                        <form:select path="categoriaNombre" class="custom-select" name="filtro" type="button" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+
+                            <form:options items="${categorias}" itemValue="nombre" itemLabel="nombre"/>
+
+
+                        </form:select>
+
+                        <form:input class="form-control me-2" type="search" autocomplete="off" placeholder="Nombre de Producto"
+                                    aria-label="Search" name="busqueda" path="busqueda"/>
+                        <form:button class="btn btn-outline-success" type="submit">Filtrar</form:button>
+                    </form:form>
+                    <%--
                     <form class="d-flex" action="${pageContext.request.contextPath}/FiltroPaginaPrincipalServlet" method="get">
 
                         <input type="hidden"name="id" value ="<%=user.getIdUsuario()%>"/>
@@ -113,6 +137,7 @@
                         <button class="btn btn-outline-success" type="submit">Filtrar</button>
 
                     </form>
+                    --%>
                 </div>
             </div>
         </div>
