@@ -39,12 +39,22 @@ public class SubastaService {
         this.subastaRepository = subastaRepository;
     }
 
-    
+
+    public SubastaDTO findBySubastaId(Integer idSubasta){
+        SubastaEntity subasta = this.subastaRepository.findByIdSubasta(idSubasta);
+        return subasta.toDTO();
+    }
     public SubastaDTO findByProduct(int idProducto){
         SubastaEntity subasta =  (this.subastaRepository.findAllByProducto(idProducto)).orElse(null);
        
         return subasta.toDTO();
     }
+    public SubastaDTO findSubastaActiva(Integer idProducto){
+        List<SubastaEntity> subastas = this.subastaRepository.findSubastaActiva(new Date(),idProducto);
+        if(subastas==null) return null;
+        return subastas.get(0).toDTO();
+    }
+
     
       public List<SubastaDTO> SubastaActiva(String titulo, String categoria){
         List <SubastaEntity> result = this.subastaRepository.findSubastaActivaFiltro(new Date(),"%"+titulo+"%","%"+categoria+"%").orElse(null);

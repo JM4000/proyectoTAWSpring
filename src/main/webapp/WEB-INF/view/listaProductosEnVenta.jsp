@@ -32,7 +32,7 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="<%= request.getContextPath()%>/PaginaPrincipalServlet" class="nav-link px-2 link-secondary">Página Principal</a></li>
 
-                <li><a href="<%= request.getContextPath()%>/NuevoProductoServlet" class="nav-link px-2 link-primary">Mis productos</a></li>
+                <li><a href="#" class="nav-link px-2 link-primary">Mis productos</a></li>
 
             </ul>
 
@@ -91,7 +91,7 @@
                 <img class="fluid" src="<%= producto.getFoto()%>">
                 <li class="p-2"></li>
                 <a type="button" class="btn btn-warning"
-                   href="/subasta/<%=producto.getIdProducto()%>/EditarSubasta%>" method="get">Editar</a>
+                   href="/subasta/<%=producto.getIdProducto()%>/EditarSubasta" method="get">Editar</a>
                 <a type="button" class="btn btn-danger"
                    href="/subasta/<%=producto.getIdProducto()%>/EliminarSubasta" method="get">Eliminar</a>
                 </li>
