@@ -41,22 +41,22 @@
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                <img src="/proyectoTAW/Images/logoipsum-logo-50.svg" alt="..." width="32" height="32" class="rounded-circle">
+                <img src="/Images/logoipsum-logo-50.svg" alt="..." width="32" height="32" class="rounded-circle">
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 
-                <li><a href="/proyectoTAW/PaginaPrincipalServlet" class="nav-link px-2 link-primary">Página Principal</a></li>
+                <li><a href="/usuario/<%=user.getIdUsuario()%>/paginaPrincipal" class="nav-link px-2 link-primary">Página Principal</a></li>
 
                 <% if (user.getTipoUsuario().getTipoUsuario().equals("Administrador")){%>
 
 
-                <li><a href="<%= request.getContextPath()%>/ListaUsuariosServlet?filtro=1" class="nav-link px-2 link-dark">Clientes</a></li> <%-- solo puede ir si es admin --%>
-                <li><a href="<%= request.getContextPath()%>/ListaProductosServlet" class="nav-link px-2 link-dark">Productos</a></li> <%-- solo puede ir si es admin --%>
-                <li><a href="<%= request.getContextPath()%>/EditorCategoriasServlet" class="nav-link px-2 link-dark">Categorías</a></li> <%-- solo puede ir si es admin --%>
+                <li><a href="/admin/ListaUsuarios" class="nav-link px-2 link-dark">Clientes</a></li> <%-- solo puede ir si es admin --%>
+                <li><a href="/admin/BusquedaProductos" class="nav-link px-2 link-dark">Productos</a></li> <%-- solo puede ir si es admin --%>
+                <li><a href="/admin/BusquedaCategorias" class="nav-link px-2 link-dark">Categorías</a></li> <%-- solo puede ir si es admin --%>
 
                 <%} else {%>
-                <li><a href="/proyectoTAW/NuevoProductoServlet" class="nav-link px-2 link-dark">Mis Productos </a></li>
+                <li><a href="/usuario/<%=user.getIdUsuario()%>/misProductos" class="nav-link px-2 link-dark">Mis Productos </a></li>
                 <%
                     }
                 %>
@@ -65,11 +65,11 @@
 
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/proyectoTAW/Images/list.svg" alt="..." width="32" height="32" class="rounded-circle">
+                    <img src="/Images/list.svg" alt="..." width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="<%= request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=user.getIdUsuario()%>">Notificaciones</a></li> <%--servlet log out --%>
-                    <li><a class="dropdown-item" href="<%= request.getContextPath()%>/CerrarSesionServlet">Cerrar Sesión</a></li> <%--servlet log out --%>
+                    <li><a class="dropdown-item" href="/usuario/<%=user.getIdUsuario()%>/notificaciones">Notificaciones</a></li> <%--notificaciones --%>
+                    <li><a class="dropdown-item" href="/CerrarSesion">Cerrar Sesión</a></li> <%--servlet log out --%>
                 </ul>
             </div>
         </div>
@@ -85,7 +85,8 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="input-group-prepend">
-                    <form:form action="/usuario/<%=user.getIdUsuario()%>/filtoPaginaPrincipal" method="post" modelAttribute="filtroPaginaPrincipal">
+                    <form:form action="/usuario/<%=user.getIdUsuario()%>/filtroPaginaPrincipal" method="post" modelAttribute="filtroPaginaPrincipal">
+
                         <form:select path="filtro" class="custom-select" name="filtro" type="button" data-toggle="dropdown"
                                      aria-haspopup="true" aria-expanded="false">
 
@@ -170,14 +171,14 @@
                 <li class="p-2">
                     <a type="button" class="btn btn-danger"
                             <%if (!fav && !comp){ %> href="usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/ponerFavoritos>">Poner a favoritos
-                        <%}else if (fav && !comp){ %>  href=""usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/quitarFavoritos>"">Quitar de favoritos
+                        <%}else if (fav && !comp){ %>  href="usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/quitarFavoritos>"">Quitar de favoritos
 
                         <%}else{%>  hidden> <%}%>
 
                     </a>
                     <a type="button" class="btn btn-outline-success"
-                            <% if (!comp){ %>     href="/usuario/<%=user.getIdUsuario()%>/<%=subasta.getIdSubasta()%>/subasta"> Participar en subasta
-                        <% } else{ %>         href="/usuario/<%=user.getIdUsuario() %>/<%= subasta.getProducto().getIdProducto()%>/quitarComprados" class="btn btn-warning" >Quitar de comprados</button>
+                            <% if (!comp){ %> href="/usuario/<%=user.getIdUsuario()%>/<%=subasta.getIdSubasta()%>/subasta"> Participar en subasta
+                        <% } else{ %>  href="/usuario/<%=user.getIdUsuario() %>/<%= subasta.getProducto().getIdProducto()%>/quitarComprados" >Quitar de comprados
                         <%} %>
                     </a>
 

@@ -6,6 +6,10 @@ public class FiltroPaginaPrincipal {
 
     private String busqueda;
 
+
+
+
+
     public FiltroPaginaPrincipal(){}
 
     public String getFiltro() {
