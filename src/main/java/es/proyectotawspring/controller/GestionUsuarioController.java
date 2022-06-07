@@ -46,9 +46,9 @@ public class GestionUsuarioController {
                 case "Administrador":
                     return "redirect:/admin/ListaProductos";
                 case "Marketing":
-                    return "redirect:/marketing/ListasMarketingServlet";
+                    return "redirect:/marketing/listasMarketing";
                 default:
-                    return "redirect:/usuario/"+usuario.getIdUsuario() + "/misProductos";
+                    return "redirect:/usuario/"+ usuario.getIdUsuario() + "/misProductos";
             }
         }
     }
