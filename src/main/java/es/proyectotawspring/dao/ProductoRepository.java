@@ -23,4 +23,7 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Intege
     @Query("SELECT p FROM SubastaEntity s JOIN s.producto p where s.creador.idUsuario= :id")
     Optional<List<ProductoEntity>> getProductosVendedor(@Param("id")int id);
 
+
+    public ProductoEntity findByIdProducto(Integer IdProducto);
+
 }

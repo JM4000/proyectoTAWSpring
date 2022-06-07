@@ -91,9 +91,9 @@
                 <img class="fluid" src="<%= producto.getFoto()%>">
                 <li class="p-2"></li>
                 <a type="button" class="btn btn-warning"
-                   href="/subasta/<%=producto.getIdProducto()%>/EditarSubasta%>">Editar</a>
+                   href="/subasta/<%=producto.getIdProducto()%>/EditarSubasta%>" method="get">Editar</a>
                 <a type="button" class="btn btn-danger"
-                   href="/subasta/<%=producto.getIdProducto()%>/EliminarSubasta%>">Eliminar</a>
+                   href="/subasta/<%=producto.getIdProducto()%>/EliminarSubasta" method="get">Eliminar</a>
                 </li>
             </ul>
         </div>

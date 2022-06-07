@@ -76,6 +76,8 @@ ProductoService {
         this.productoRepository.delete(this.productoRepository.findById(id).orElse(null));
     }
 
+    public void borrar(Integer idProducto){this.productoRepository.delete(this.productoRepository.findByIdProducto(idProducto));}
+
     public void edit(int id,String title, String desc, String foto, double precio, List<CategoriaEntity> categoriasFinales) {
         ProductoEntity producto = this.productoRepository.findById(id).orElse(null);
               
