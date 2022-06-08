@@ -1,5 +1,6 @@
 package es.proyectotawspring.controller;
 
+import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.dto.ProductoDTO;
 import es.proyectotawspring.dto.SubastaDTO;
 import es.proyectotawspring.dto.UsuarioDTO;
@@ -9,12 +10,14 @@ import es.proyectotawspring.service.SubastaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("subasta")
@@ -54,8 +57,8 @@ public class SubastaController extends ProyectoTawController{
             return "redirect:/";
         } else {
             ProductoDTO producto= this.productoService.find(idProducto);
-         //   SubastaDTO subasta = this.subastaService.findSubastaActiva(idProducto);
-            SubastaDTO subasta = this.subastaService.findBySubastaId(10);
+           SubastaDTO subasta = this.subastaService.findSubastaActiva(idProducto);
+
 
             model.addAttribute("errorCategorias","");
             model.addAttribute("categorias", this.categoriaService.findAll());
@@ -79,7 +82,47 @@ public class SubastaController extends ProyectoTawController{
     }
 
 
+    @PostMapping("/cerrar")
+    public String doCerrarSubasta(@RequestParam("idSubasta") Integer idSubasta, HttpSession session){
+        if (super.redirigirUsuario("Estandar", session)) {
+            return "redirect:/";
+        } else {
+            SubastaDTO s = this.subastaService.findBySubastaId(idSubasta);
+            this.subastaService.editarCierreSubasta(s,new Date());
 
 
+            ProductoDTO p = s.getProducto();
+            this.subastaService.editarCompradorSubasta(p.getIdProducto(),s.getMayorPostor().getIdUsuario());
+
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+            return "redirect:/usuario/"+usuario.getIdUsuario()+"/misProductos";
+        }
+    }
+
+
+
+
+    @PostMapping("/guardarEdicion")
+    public String doGuardarEdicion(@RequestParam("name") String title,@RequestParam("descripcion")String desc,@RequestParam("image")String foto,@RequestParam("id") Integer idProducto,@RequestParam("fecha")String strFecha,HttpSession session,@RequestParam("categorias") String [] categorias ) throws ParseException {
+        if (super.redirigirUsuario("Estandar", session)) {
+            return "redirect:/";
+        } else {
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Date fecha = formato.parse(strFecha);
+
+            List<CategoriaDTO> categoriasTotales = this.cFacade.findAll();
+            List<CategoriaDTO> categoriasFinales = new ArrayList<CategoriaDTO>();
+
+
+
+
+
+
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+            return "redirect:/usuario/"+usuario.getIdUsuario()+"/misProductos";
+        }
+
+
+    }
 
 }

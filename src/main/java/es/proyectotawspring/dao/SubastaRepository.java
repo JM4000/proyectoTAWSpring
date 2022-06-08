@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface SubastaRepository extends JpaRepository<SubastaEntity, Integer> {
     Optional<SubastaEntity> findAllByProducto(int idProducto);
     SubastaEntity findByIdSubasta(Integer idSubasta);
+    SubastaEntity findByProductoIdProducto(Integer idProducto);
 
     @Query("SELECT DISTINCT s FROM SubastaEntity s JOIN s.producto p LEFT JOIN p.categoriaList c WHERE s.fechaCierre >= :today AND p.titulo LIKE :busqueda and c.nombre LIKE :categoria")
     Optional<List<SubastaEntity>> findSubastaActivaFiltro(@Param("today") Date date, @Param("busqueda")String titulo, @Param("categoria") String categoria);
@@ -25,6 +26,10 @@ public interface SubastaRepository extends JpaRepository<SubastaEntity, Integer>
 
     @Query("SELECT s FROM SubastaEntity s JOIN ProductoEntity  p ON s.producto.idProducto=p.idProducto WHERE s.fechaCierre >= :today and p.idProducto= :idProducto")
      List<SubastaEntity> findSubastaActiva(@Param("today") Date today,@Param("idProducto")Integer idProducto);
+
+    @Query("SELECT s FROM SubastaEntity s WHERE s.producto.idProducto= :id")
+    List<SubastaEntity> findSubastasDelProducto(@Param("id")Integer id);
+
 
 
 
