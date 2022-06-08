@@ -49,12 +49,29 @@
     <main class="row justify-content-md-center">
 
         <div class="py-5 text-center">
+            <% if (subasta.getFechaCierre().compareTo(new Date())<=0 ){%>
+            <h2>Puja cerrada</h2>
+            <th> <%= producto.getTitulo()%></th></br>
+            <th> <img src="<%= producto.getFoto()%>"/>
+            </th></br>
+
+            <th> PRECIO FINAL: <%=subasta.getPredioActual()%> €</th></br>
+            <form action="/usuario/<%=usuario.getIdUsuario()%>/misProductos" >
+                <button class="w-100 btn btn-primary btn-lg" type="submit" >Volver</button>
+            </form>
+
+
+            <%}else{%>
+
+
+
+
             <h2>Edición de productos</h2>
             <p class="lead">Por favor, introduzca los campos a editar</p>
 
         </div>
         <div class="col-md-7 col-lg-8">
-            <form class="needs-validation" novalidate action="${pageContext.request.contextPath}/GuardarProductoServlet">
+            <form class="needs-validation" novalidate action="/subasta/guardarEdicion" method="post">
                 <div class="row g-3">
                     <div class="col-sm-12">
                         <label for="name" class="form-label">Titulo del Producto</label>
@@ -126,14 +143,15 @@
             </form>
 
             <th></th>
-            <form action="CerrarSubastaServlet" method="POST">
-                <button class="w-100 btn btn-primary btn-lg" type="submit" name="subastaId" value="<%= subasta.getIdSubasta()%>">Cerrar Subasta</button>
+            <form action="/subasta/cerrar" method="POST">
+                <button class="w-100 btn btn-primary btn-lg" type="submit" name="idSubasta" value="<%= subasta.getIdSubasta()%>">Cerrar Subasta</button>
 
             </form>
 
 
 
         </div>
+        <%}%>
 </main>
 
 <footer class="my-5 pt-5 text-muted text-center text-small">

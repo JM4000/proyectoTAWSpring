@@ -5,10 +5,14 @@
  */
 package es.proyectotawspring.service;
 
+import es.proyectotawspring.dao.ProductoRepository;
 import es.proyectotawspring.dao.SubastaRepository;
 import es.proyectotawspring.dao.UsuarioRepository;
 import es.proyectotawspring.dto.SubastaDTO;
+import es.proyectotawspring.dto.UsuarioDTO;
+import es.proyectotawspring.entity.ProductoEntity;
 import es.proyectotawspring.entity.SubastaEntity;
+import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,28 @@ public class SubastaService {
     
 
     private UsuarioRepository usuarioRepository;
+    private ProductoRepository productoRepository;
+
+    public UsuarioRepository getUsuarioRepository() {
+        return usuarioRepository;
+    }
+
+    public ProductoRepository getProductoRepository() {
+        return productoRepository;
+    }
+
+    @Autowired
+    public void setProductoRepository(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
+
+    public SubastaRepository getSubastaRepository() {
+        return subastaRepository;
+    }
+    @Autowired
+    public void setSubastaRepository(SubastaRepository subastaRepository) {
+        this.subastaRepository = subastaRepository;
+    }
 
     @Autowired
     private void setUsuarioRepository(UsuarioRepository usuarioRepository){
@@ -50,9 +76,9 @@ public class SubastaService {
         return subasta.toDTO();
     }
     public SubastaDTO findSubastaActiva(Integer idProducto){
-        List<SubastaEntity> subastas = this.subastaRepository.findSubastaActiva(new Date(),idProducto);
-        if(subastas==null) return null;
-        return subastas.get(0).toDTO();
+        SubastaEntity subastas = this.subastaRepository.findByProductoIdProducto(idProducto);
+      return subastas.toDTO();
+
     }
 
     
@@ -74,5 +100,20 @@ public class SubastaService {
          SubastaEntity subasta = this.subastaRepository.findById(id).orElse(null);
         return subasta.toDTO();
     }
+
+    public void editarCierreSubasta(SubastaDTO ss, Date d){
+        SubastaEntity s = this.subastaRepository.findByIdSubasta(ss.getIdSubasta());
+        s.setFechaCierre(d);
+        this.subastaRepository.save(s);
+    }
+
+
+    public void editarCompradorSubasta(Integer idProducto,Integer idMayorPostor) {
+        ProductoEntity p = this.productoRepository.findByIdProducto(idProducto);
+        UsuarioEntity u = this.usuarioRepository.findById(idMayorPostor).orElse(null);
+        p.setIdComprador(u);
+        this.productoRepository.save(p);
+    }
+
 
 }
