@@ -6,9 +6,11 @@
 package es.proyectotawspring.service;
 
 import es.proyectotawspring.dao.GeneroRepository;
+import es.proyectotawspring.dao.ProductoRepository;
 import es.proyectotawspring.dao.TipoUsuarioRepository;
 import es.proyectotawspring.dao.UsuarioRepository;
 import es.proyectotawspring.dto.UsuarioDTO;
+import es.proyectotawspring.entity.ProductoEntity;
 import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +38,17 @@ public class UsuarioService {
 
     private TipoUsuarioRepository tipoUsuarioRepository;
 
+
     @Autowired
     public void setTipoUsuarioRepository(TipoUsuarioRepository tipoUsuarioRepository){
         this.tipoUsuarioRepository = tipoUsuarioRepository;
+    }
+
+
+    private ProductoRepository productoRepository;
+    @Autowired
+    public void setProductoRepository(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
     }
 
     public void crearUsuario(String username, String pass, String name, String surname, String city, String address, Integer age, String gender, String userType) {
@@ -183,4 +193,41 @@ public class UsuarioService {
 
         this.usuarioRepository.save(u);
     }
+
+    public void eliminarProducto(int idUsuario, int idProducto) {
+        ProductoEntity producto = this.productoRepository.findById(idProducto).orElse(null);
+        UsuarioEntity usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (!this.productoRepository.isProductFavourite(idUsuario, idProducto).equals(null)) { //si el producto  es favorito del usuario
+            List<UsuarioEntity> usuarios = producto.getUsuarioList();
+            List<ProductoEntity> productos = usuario.getProductoList();
+
+            productos.remove(producto);
+            usuarios.remove(usuario);
+
+            this.usuarioRepository.save(usuario);
+            this.productoRepository.save(producto);
+        }
+    }
+
+    public void insertarProducto(int idUsuario, int idProducto) {
+        ProductoEntity producto = this.productoRepository.findById(idProducto).orElse(null);
+        UsuarioEntity usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (this.productoRepository.isProductFavourite(idUsuario, idProducto).equals(null)) { //si el producto no es favorito del usuario
+            List<UsuarioEntity> usuarios = producto.getUsuarioList();
+            List<ProductoEntity> productos = usuario.getProductoList();
+
+            productos.add(producto);
+            usuarios.add(usuario);
+
+            producto.setUsuarioList(usuarios);
+            usuario.setProductoList(productos);
+
+            this.usuarioRepository.save(usuario);
+            this.productoRepository.save(producto);
+        }
+
+    }
+
 }

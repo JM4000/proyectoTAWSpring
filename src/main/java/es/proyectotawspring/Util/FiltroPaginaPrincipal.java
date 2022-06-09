@@ -6,11 +6,19 @@ public class FiltroPaginaPrincipal {
 
     private String busqueda;
 
-
+    private Integer idUsuario;
 
 
 
     public FiltroPaginaPrincipal(){}
+
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
     public String getFiltro() {
         return filtro;

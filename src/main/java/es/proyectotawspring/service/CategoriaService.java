@@ -75,7 +75,7 @@ public class CategoriaService {
         List<CategoriaEntity> result = new ArrayList<>();
 
         for (String s: busqueda) {
-            result.add(this.categoriaRepository.getByNombre(s));
+            result.add(this.categoriaRepository.findByNombre(s));
         }
 
         return result;
@@ -165,4 +165,29 @@ public class CategoriaService {
     }
 
 
+    public List<CategoriaEntity> getCategoriasRestantes(List<CategoriaEntity> categoriasFinales) {
+
+        List<CategoriaEntity> result = this.categoriaRepository.findAll();
+        result.removeAll(categoriasFinales);
+
+        return result;
+    }
+
+    public void modificarCategorias(List<CategoriaEntity> categoriasFinales, List<CategoriaEntity> categoriasNoIncluidas, ProductoEntity producto) {
+
+        for(CategoriaEntity c:categoriasFinales){
+            if(!c.getProductoList().contains(producto)){
+                c.getProductoList().add(producto);
+                this.categoriaRepository.save(c);
+            }
+        }
+
+        for(CategoriaEntity c:categoriasNoIncluidas){
+            if(c.getProductoList().contains(producto)){
+                c.getProductoList().remove(producto);
+                this.categoriaRepository.save(c);
+            }
+        }
+
+    }
 }

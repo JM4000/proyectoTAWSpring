@@ -85,8 +85,8 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="input-group-prepend">
-                    <form:form action="/usuario/<%=user.getIdUsuario()%>/filtroPaginaPrincipal" method="post" modelAttribute="filtroPaginaPrincipal">
-
+                    <form:form action="/usuario/filtroPaginaPrincipal" method="post" modelAttribute="filtroPaginaPrincipal">
+                        <form:hidden path="idUsuario"/>
                         <form:select path="filtro" class="custom-select" name="filtro" type="button" data-toggle="dropdown"
                                      aria-haspopup="true" aria-expanded="false">
 
@@ -98,7 +98,7 @@
 
                         <form:select path="categoriaNombre" class="custom-select" name="filtro" type="button" data-toggle="dropdown"
                                      aria-haspopup="true" aria-expanded="false">
-
+                            <form:option selected="true" value="">Todas las catgeroias</form:option>
                             <form:options items="${categorias}" itemValue="nombre" itemLabel="nombre"/>
 
 
