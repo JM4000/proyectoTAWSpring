@@ -8,6 +8,7 @@ package es.proyectotawspring.service;
 import es.proyectotawspring.dao.CategoriaRepository;
 import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.entity.CategoriaEntity;
+import es.proyectotawspring.entity.ProductoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -106,4 +107,29 @@ public class CategoriaService {
         return categoriasFinales;
     }
 
+    public List<CategoriaEntity> getCategoriasRestantes(List<CategoriaEntity> categoriasFinales) {
+
+        List<CategoriaEntity> result = this.categoriaRepository.findAll();
+        result.removeAll(categoriasFinales);
+
+        return result;
+    }
+
+    public void modificarCategorias(List<CategoriaEntity> categoriasFinales, List<CategoriaEntity> categoriasNoIncluidas, ProductoEntity producto) {
+
+        for(CategoriaEntity c:categoriasFinales){
+            if(!c.getProductoList().contains(producto)){
+                c.getProductoList().add(producto);
+                this.categoriaRepository.save(c);
+            }
+        }
+
+        for(CategoriaEntity c:categoriasNoIncluidas){
+            if(c.getProductoList().contains(producto)){
+                c.getProductoList().remove(producto);
+                this.categoriaRepository.save(c);
+            }
+        }
+
+    }
 }

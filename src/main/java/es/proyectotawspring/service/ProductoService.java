@@ -43,6 +43,13 @@ ProductoService {
         this.productoRepository = productoRepository;
     }
 
+    private CategoriaService categoriaService;
+
+    @Autowired
+    public void setCategoriaService(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
+    }
+
     public List<ProductoDTO> findFiltered(Integer filtro, String like) {
 
         List<ProductoDTO> productos;
@@ -88,10 +95,13 @@ ProductoService {
         producto.setCategoriaList(categoriasFinales);
         
         this.productoRepository.save(producto);
+
+        this.categoriaService.modificarCategorias(categoriasFinales, this.categoriaService.getCategoriasRestantes(categoriasFinales), producto);
         
     }
-  
-     public Boolean isProductFavourite(int idProducto, int idUsuario){
+
+
+    public Boolean isProductFavourite(int idProducto, int idUsuario){
         return this.productoRepository.isProductFavourite(idUsuario,idProducto).isPresent();
      }
 
