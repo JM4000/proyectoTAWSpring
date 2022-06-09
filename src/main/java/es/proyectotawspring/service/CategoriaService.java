@@ -54,7 +54,7 @@ public class CategoriaService {
         List<CategoriaEntity> result = new ArrayList<>();
 
         for (String s: busqueda) {
-            result.add(this.categoriaRepository.getByNombre(s));
+            result.add(this.categoriaRepository.findByNombre(s));
         }
 
         return result;

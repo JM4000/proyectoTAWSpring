@@ -102,7 +102,7 @@ public class SubastaController extends ProyectoTawController{
 
 
 
-    @PostMapping("/guardarEdicion")
+    /*@PostMapping("/guardarEdicion")
     public String doGuardarEdicion(@RequestParam("name") String title,@RequestParam("descripcion")String desc,@RequestParam("image")String foto,@RequestParam("id") Integer idProducto,@RequestParam("fecha")String strFecha,HttpSession session,@RequestParam("categorias") String [] categorias ) throws ParseException {
         if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
@@ -124,5 +124,5 @@ public class SubastaController extends ProyectoTawController{
 
 
     }
-
+*/
 }

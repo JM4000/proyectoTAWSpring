@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -124,13 +125,12 @@ public class AdminController extends ProyectoTawController {
     }
 
     @PostMapping("/GuardarProducto")
-    public String guardarProducto(@ModelAttribute("producto") ProductoDTO p, HttpSession session) {
+    public String guardarProducto(@ModelAttribute("producto") ProductoDTO p,HttpSession session) {
         if (super.redirigirUsuario("Administrador", session)) {
             return "redirect:/";
         } else {
-            this.productoService.edit(p.getIdProducto(), p.getTitulo(), p.getDescripcion(), p.getFoto(), p.getPrecioSalida(), this.categoriaService.getCategorias(p.getCategoriaList()));
-
-            // ¿Por qué de todo lo unico que no me guarda son las categorías?
+            List<String> nombresCategorias = p.getCategoriaList();
+            this.productoService.edit(p.getIdProducto(), p.getTitulo(), p.getDescripcion(), p.getFoto(), p.getPrecioSalida(), this.categoriaService.getCategorias(nombresCategorias));
 
             return "redirect:/admin/ListaProductos";
         }
