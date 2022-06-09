@@ -59,7 +59,17 @@ public class SubastaController extends ProyectoTawController{
             ProductoDTO producto= this.productoService.find(idProducto);
            SubastaDTO subasta = this.subastaService.findSubastaActiva(idProducto);
 
+       //    ProductoSubasta productoSubasta= new ProductoSubasta() ;
+         //  productoSubasta.setDescripcion(productoSubasta.getDescripcion());
+        //   SimpleDateFormat fommat = new SimpleDateFormat("dd-MM-yyyy");
+          // String fecha = fommat.format(subasta.getFechaCierre())
 
+         //  productoSubasta.setFechaCierreSubasta(subasta.getFechaCierre());
+         //  productoSubasta.setFoto(producto.getFoto());
+          // productoSubasta.setTitulo(producto.getTitulo());
+           //productoSubasta.setCategoriaList(producto.getCategoriaList());
+
+           // model.addAttribute("productoSubasta",productoSubasta);
             model.addAttribute("errorCategorias","");
             model.addAttribute("categorias", this.categoriaService.findAll());
             model.addAttribute("producto",producto);
@@ -101,28 +111,69 @@ public class SubastaController extends ProyectoTawController{
 
 
 
-
+//terminar Guardar Edicion
     @PostMapping("/guardarEdicion")
-    public String doGuardarEdicion(@RequestParam("name") String title,@RequestParam("descripcion")String desc,@RequestParam("image")String foto,@RequestParam("id") Integer idProducto,@RequestParam("fecha")String strFecha,HttpSession session,@RequestParam("categorias") String [] categorias ) throws ParseException {
+    public String doGuardarEdicion(@ModelAttribute("producto")ProductoDTO producto,@RequestParam("fecha") String strFecha,@RequestParam("idSubasta") Integer idSubasta, Model model, HttpSession session) throws ParseException {
         if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
         } else {
+
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             Date fecha = formato.parse(strFecha);
+            List<CategoriaDTO> categoriasTotales = this.categoriaService.findAll();
 
-            List<CategoriaDTO> categoriasTotales = this.cFacade.findAll();
-            List<CategoriaDTO> categoriasFinales = new ArrayList<CategoriaDTO>();
+            if (producto.getCategoriaList() == null || producto.getCategoriaList().size() == 0) { // caso en el que las categorias seleccionadas son nulas
+                String strError = "**Error, debes seleccionar al menos una categoria";
+                SubastaDTO subasta = this.subastaService.findBySubastaId(idSubasta);
+                model.addAttribute("errorCategorias", strError);
+                model.addAttribute("producto", producto);
+                model.addAttribute("subasta", subasta);
+                model.addAttribute("categorias", categoriasTotales);
+                return "editarSubasta";
+            } else { // caso en el que los datos están correcto
+                //OBTENGO EL PRODUCTO COMO ERA ANTES PARA OBTENER LAS CATEGORIAS DE ANTES CON EL FIND
+                ProductoDTO productoDTO= this.productoService.find(producto.getIdProducto());
+// als categorias antiguas están en productoDTO.getCategoriaList()
+
+
+
+                List<CategoriaDTO> categoriasFinales = new ArrayList<CategoriaDTO>();
+                for(String nombre : producto.getCategoriaList()){
+                    categoriasFinales.add(this.categoriaService.findByNombre(nombre).toDTO());
+                }
+
+
+
+                // si la categoria antes no estaba y ahroa sí, lo introducimos ene la lsita, sino , lo borramos
+                for (CategoriaDTO c : categoriasTotales) {
+                    if(!productoDTO.getCategoriaList().contains(c.getNombre()) && producto.getCategoriaList().contains(c.getNombre())){
+                        this.categoriaService.editarRelacionCategoriaProducto(producto.getIdProducto(), c.getIdCategoria());
+                    }
+
+                    if (productoDTO.getCategoriaList().contains(c.getNombre()) && !producto.getCategoriaList().contains(c.getNombre())) {
+                        this.categoriaService.borrarRelacionCategoriaProducto(producto.getIdProducto(), c.getIdCategoria());
+                    }
 
 
 
 
 
+                    SubastaDTO subasta = this.subastaService.findBySubastaId(idSubasta);
 
-            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
-            return "redirect:/usuario/"+usuario.getIdUsuario()+"/misProductos";
+
+                this.subastaService.editarCierreSubasta(subasta, fecha);
+                this.productoService.editar(producto.getIdProducto(), producto.getTitulo(), producto.getDescripcion(), producto.getFoto(), categoriasFinales);
+
+
+
+
+
+                }
+
+                UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+                return "redirect:/usuario/" + usuario.getIdUsuario() + "/misProductos";
+            }
         }
 
 
-    }
-
-}
+    }}

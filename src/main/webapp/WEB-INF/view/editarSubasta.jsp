@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : editorProductoSubasta
     Created on : 26-abr-2022, 8:46:43
@@ -71,12 +72,15 @@
 
         </div>
         <div class="col-md-7 col-lg-8">
-            <form class="needs-validation" novalidate action="/subasta/guardarEdicion" method="post">
+            <form:form class="needs-validation" novalidate="true" method="post" action="/subasta/guardarEdicion" modelAttribute="producto">
+      <%--      <form class="needs-validation" novalidate action="/subasta/guardarEdicion" method="post"> --%>
+                <input type="hidden" value="<%=subasta.getIdSubasta()%>" name="idSubasta" >
                 <div class="row g-3">
                     <div class="col-sm-12">
                         <label for="name" class="form-label">Titulo del Producto</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" name="name" id="name" value="<%= producto.getTitulo()%>" required></input>
+                            <form:input  type= "hidden" path="idProducto" />
+                            <form:input type="text" class="form-control" name="name" id="name" required="required" path="titulo"/>
                             <div class="invalid-feedback">
                                 Título de producto obligatorio.
                             </div>
@@ -86,7 +90,7 @@
                     <div class="col-sm-12">
                         <label for="descripcion" class="form-label">Descripción del Producto</label>
                         <div class="input-group has-validation">
-                            <textarea type="text" class="comment" name="descripcion" id="descripcion" rows="10" cols='120' required><%= producto.getDescripcion()%></textarea>
+                            <form:textarea type="text" class="comment" name="descripcion" id="descripcion" rows="10" cols='120' required="required" path="descripcion"/>
                             <div class="invalid-feedback">
                                 Descripción del producto obligatorio.
                             </div>
@@ -96,7 +100,7 @@
                     <div class="col-sm-12">
                         <label for="image" class="form-label">URL de imagen</label>
                         <div class="input-group has-validation">
-                            <input type="text" class="form-control" name="image" id="image" value="<%= producto.getFoto()%>" required></input>
+                            <form:input type="text" class="form-control" name="image" id="image" path="foto" required="required"/>
                             <div class="invalid-feedback">
                                 Imagen necesaria.
                             </div>
@@ -110,27 +114,19 @@
                 </div>
                 <div class="col-md-8">
                     <label for="fecha" class="form-label">Fecha de cierre de subasta</label>
-                    <input type="date" id="start" name="fecha" value="<%=fecha%>" min="2022-05-05"  required> </input>
+                    <input type="date"  id="start" name="fecha" min="2022-05-05" value="<%=subasta.getFechaCierre()%>"  required="required" />
                     <div class="invalid-feedback">
                         Fecha de cierre de subasta obligatorio
                     </div>
                 </div>
 
                 <div class="col-md-12" name="categorias">
-                        <label for="categorias" class="form-label">Categorias</label></br>
-                        <%
-                            for (CategoriaDTO c : categorias) {
-                        %>
+                    <label class="form-label">Categorias</label></br>
 
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" name="categorias" type="checkbox" value="<%= c.getIdCategoria()%>" <%= !producto.containsCategory(c)? "": "checked" %>>
-                            <label class="form-check-label" for="<%= c.getIdCategoria()%>">
-                                <%= c.getNombre()%>
-                            </label>
-                        </div>
-
-                        <% } %>
+                    <div class="form-check form-check-inline">
+                        <form:checkboxes class="m-2" path="categoriaList" items="${categorias}" itemLabel="nombre" itemValue="nombre"/>
                     </div>
+                </div>
 
 
                 <% if (error!=null && !error.isEmpty()) {%>
@@ -140,7 +136,7 @@
                     <hr class="my-4">
 
                     <button class="w-100 btn btn-primary btn-lg" type="submit" name="id" value="<%= producto.getIdProducto()%>">Finalizar Edición</button>
-            </form>
+                </form:form>
 
             <th></th>
             <form action="/subasta/cerrar" method="POST">

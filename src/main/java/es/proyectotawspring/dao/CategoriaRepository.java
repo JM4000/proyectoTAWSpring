@@ -13,7 +13,8 @@ import java.util.Optional;
 @Repository
 public interface CategoriaRepository extends JpaRepository<CategoriaEntity,Integer> {
     List<CategoriaEntity> findAllByNombre(String busqueda);
-
+    CategoriaEntity findByNombre(String s);
+    CategoriaEntity findByIdCategoria(Integer idCategoria);
     CategoriaEntity getByNombre(String nombre);
 
     @Query("select a from CategoriaEntity a where a.nombre like CONCAT('%', :busqueda, '%')")
