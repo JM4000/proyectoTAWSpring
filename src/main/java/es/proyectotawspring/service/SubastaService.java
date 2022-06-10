@@ -116,4 +116,19 @@ public class SubastaService {
     }
 
 
+    public void crearSubasta(Date fecha, Integer idProducto, double precioSalida,int idUser) {
+        SubastaEntity subasta = new SubastaEntity();
+
+
+        UsuarioEntity user = this.usuarioRepository.findById(idUser).orElse(null);
+        ProductoEntity producto = this.productoRepository.findByIdProducto(idProducto);
+
+        SubastaEntity s = new SubastaEntity();
+        s.setCreador(user);
+        s.setPredioActual(precioSalida);
+        s.setProducto(producto);
+        s.setFechaCierre(fecha);
+        this.subastaRepository.save(s);
+
+    }
 }

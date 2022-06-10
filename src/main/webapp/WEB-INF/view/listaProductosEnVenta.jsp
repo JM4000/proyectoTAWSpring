@@ -63,7 +63,7 @@
                         <input class="form-control me-2" type="search" autocomplete="off" placeholder="Busqueda..." aria-label="Search" name="busqueda">
                         <button class="btn btn-outline-success" type="submit">Buscar</button>
 
-                        <a type="button" class="btn btn-danger" href="${pageContext.request.contextPath}/SubastarProductoServlet">Subastar producto</a>
+                        <a type="button" class="btn btn-danger" href="/subasta/crearSubasta">Subastar producto</a>
 
 
                     </form>

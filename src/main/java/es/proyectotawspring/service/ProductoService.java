@@ -170,6 +170,25 @@ ProductoService {
         producto.setCategoriaList(categoriaEntities);
         this.productoRepository.save(producto);
     }
-  
+
+
+
+    public ProductoEntity crearProductoSubasta(String title,String desc,String foto,Double precio, List<String> categoriasFinales){
+        ProductoEntity producto = new ProductoEntity();
+        producto.setTitulo(title);
+        producto.setDescripcion(desc);
+        producto.setFoto(foto);
+        producto.setPrecioSalida(precio);
+
+        List<CategoriaEntity> categorias = new ArrayList<>();
+
+        for(String c : categoriasFinales){
+            CategoriaEntity categoria =  this.categoriaRepository.findByNombre(c);
+            categorias.add(categoria);
+        }
+        producto.setCategoriaList(categorias);
+        this.productoRepository.save(producto);
+        return  producto;
+    }
      
 }

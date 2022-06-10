@@ -145,7 +145,6 @@ public class CategoriaService {
         p.remove(producto);
         c.setProductoList(p);
         this.categoriaRepository.save(c);
-
     }
     public void borrarRelacionCatProd(Integer idProducto,Integer idCategoria){
         ProductoEntity producto= this.productoRepository.findByIdProducto(idProducto);
