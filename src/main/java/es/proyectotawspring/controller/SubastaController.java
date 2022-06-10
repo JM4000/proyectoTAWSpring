@@ -4,6 +4,7 @@ import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.dto.ProductoDTO;
 import es.proyectotawspring.dto.SubastaDTO;
 import es.proyectotawspring.dto.UsuarioDTO;
+import es.proyectotawspring.entity.CategoriaEntity;
 import es.proyectotawspring.entity.ProductoEntity;
 import es.proyectotawspring.service.CategoriaService;
 import es.proyectotawspring.service.ProductoService;
@@ -109,7 +110,7 @@ public class SubastaController extends ProyectoTawController{
             return "crearSubasta";
         }
     }
-    @PostMapping("/guardarSubasta")
+    @PostMapping("/guardarSubasta")  // no se guardan bien las categorias
     public String doGuardarNuevaSubasta(@ModelAttribute("producto")ProductoDTO producto, @RequestParam("fecha") String strFecha,HttpSession session,Model model) throws ParseException{
         if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
@@ -137,9 +138,15 @@ public class SubastaController extends ProyectoTawController{
                 UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
                 this.subastaService.crearSubasta(fecha,p.getIdProducto(),p.getPrecioSalida(),usuario.getIdUsuario());
 
+                for (CategoriaEntity c : p.getCategoriaList()) {
+                    this.categoriaService.editarRelacionCategoriaProducto(p.getIdProducto(), c.getIdCategoria());
+                }
 
 
-                return "redirect:/usuario/" + usuario.getIdUsuario() + "/misProductos";
+
+
+
+                    return "redirect:/usuario/" + usuario.getIdUsuario() + "/misProductos";
             }
         }
 
