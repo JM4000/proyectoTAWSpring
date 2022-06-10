@@ -6,6 +6,7 @@
 package es.proyectotawspring.service;
 
 import es.proyectotawspring.dao.CategoriaRepository;
+import es.proyectotawspring.dao.ProductoRepository;
 import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.entity.CategoriaEntity;
 import es.proyectotawspring.entity.ProductoEntity;
@@ -25,6 +26,25 @@ import static es.proyectotawspring.entity.CategoriaEntity.toDTOList;
 public class CategoriaService {
 
     private CategoriaRepository categoriaRepository;
+    private ProductoRepository productoRepository;
+
+
+    public CategoriaRepository getCategoriaRepository() {
+        return categoriaRepository;
+    }
+
+    @Autowired
+    public void setCategoriaRepository(CategoriaRepository categoriaRepository) {
+        this.categoriaRepository = categoriaRepository;
+    }
+
+    public ProductoRepository getProductoRepository() {
+        return productoRepository;
+    }
+    @Autowired
+    public void setProductoRepository(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
 
     @Autowired
     private void setUsuarioRepository(CategoriaRepository categoriaRepository){
@@ -106,6 +126,43 @@ public class CategoriaService {
     
         return categoriasFinales;
     }
+
+    public void editarRelacionCategoriaProducto(Integer idProducto, Integer idCategoria) {
+        ProductoEntity producto= this.productoRepository.findByIdProducto(idProducto);
+        CategoriaEntity c = this.categoriaRepository.findById(idCategoria).orElse(null);
+        List<ProductoEntity> p = new ArrayList<>();
+        p = c.getProductoList();
+        p.add(producto);
+        c.setProductoList(p);
+        this.categoriaRepository.save(c);
+    }
+
+    public void borrarRelacionCategoriaProducto(Integer idProducto,Integer idCategoria){
+        ProductoEntity producto= this.productoRepository.findByIdProducto(idProducto);
+        CategoriaEntity c = this.categoriaRepository.findById(idCategoria).orElse(null);
+        List<ProductoEntity> p = new ArrayList<>();
+        p = c.getProductoList();
+        p.remove(producto);
+        c.setProductoList(p);
+        this.categoriaRepository.save(c);
+    }
+    public void borrarRelacionCatProd(Integer idProducto,Integer idCategoria){
+        ProductoEntity producto= this.productoRepository.findByIdProducto(idProducto);
+        CategoriaEntity c = this.categoriaRepository.findById(idCategoria).orElse(null);
+        List<ProductoEntity> p = new ArrayList<>();
+        p = c.getProductoList();
+        p.remove(producto);
+        c.setProductoList(p);
+        this.categoriaRepository.save(c);
+    }
+
+    public CategoriaEntity findByCategoriaId(Integer id){
+        return this.categoriaRepository.findByIdCategoria(id);
+    }
+    public  CategoriaEntity findByNombre(String s){
+        return this.categoriaRepository.findByNombre(s);
+    }
+
 
     public List<CategoriaEntity> getCategoriasRestantes(List<CategoriaEntity> categoriasFinales) {
 

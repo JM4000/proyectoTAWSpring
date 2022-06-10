@@ -66,15 +66,14 @@ public class UsuarioController extends ProyectoTawController {
 
     @GetMapping("/{id}/misProductos")
     public String doListarMisProductos(@PathVariable("id") Integer id, Model model, HttpSession session){
-        if(super.redirigirUsuario("Estandar", session)){
+       /* if(super.redirigirUsuario("Estandar", session)){
             return"redirect:/";
-        }else{
-
+        }else{ */
             List<ProductoDTO> productos = this.productoService.findAll();
             model.addAttribute("productos",productos);
             model.addAttribute("errorCategorias","");
             return "listaProductosEnVenta";
-        }
+      /*  }*/
     }
 
     @GetMapping("/{id}/paginaPrincipal")

@@ -134,6 +134,9 @@ public class CategoriaEntity implements Serializable {
         return result;
     }
 
+
+
+
     @XmlTransient
     public List<ListaEntity> getListaList() {
         return listaList;

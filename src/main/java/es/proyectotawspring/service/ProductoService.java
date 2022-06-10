@@ -5,8 +5,10 @@
  */
 package es.proyectotawspring.service;
 
+import es.proyectotawspring.dao.CategoriaRepository;
 import es.proyectotawspring.dao.ProductoRepository;
 import es.proyectotawspring.dao.UsuarioRepository;
+import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.dto.ProductoDTO;
 import es.proyectotawspring.entity.CategoriaEntity;
 import es.proyectotawspring.entity.ProductoEntity;
@@ -14,6 +16,7 @@ import es.proyectotawspring.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static es.proyectotawspring.entity.ProductoEntity.toDTOList;
@@ -30,6 +33,29 @@ public class
 ProductoService {
 
     private UsuarioRepository usuarioRepository;
+    private CategoriaRepository categoriaRepository;
+
+    public UsuarioRepository getUsuarioRepository() {
+        return usuarioRepository;
+    }
+
+    public CategoriaRepository getCategoriaRepository() {
+        return categoriaRepository;
+    }
+
+    @Autowired
+    public void setCategoriaRepository(CategoriaRepository categoriaRepository) {
+        this.categoriaRepository = categoriaRepository;
+    }
+
+    public ProductoRepository getProductoRepository() {
+        return productoRepository;
+    }
+
+    @Autowired
+    public void setProductoRepository(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
 
     @Autowired
     private void setUsuarioRepository(UsuarioRepository usuarioRepository){
@@ -125,6 +151,44 @@ ProductoService {
     }
 
 
-  
+    public void editar (int idProducto,String titulo, String descripcion, String foto, List<CategoriaDTO> categoriasFinales){
+        ProductoEntity producto = this.productoRepository.findById(idProducto).orElse(null);
+
+        producto.setTitulo(titulo);
+        producto.setDescripcion(descripcion);
+        producto.setFoto(foto);
+
+
+
+
+        List<CategoriaEntity> categoriaEntities= new ArrayList<>();
+        for(CategoriaDTO c : categoriasFinales){
+            CategoriaEntity cat= this.categoriaRepository.findById(c.getIdCategoria()).orElse(null);
+            categoriaEntities.add(cat);
+        }
+
+        producto.setCategoriaList(categoriaEntities);
+        this.productoRepository.save(producto);
+    }
+
+
+
+    public ProductoEntity crearProductoSubasta(String title,String desc,String foto,Double precio, List<String> categoriasFinales){
+        ProductoEntity producto = new ProductoEntity();
+        producto.setTitulo(title);
+        producto.setDescripcion(desc);
+        producto.setFoto(foto);
+        producto.setPrecioSalida(precio);
+
+        List<CategoriaEntity> categorias = new ArrayList<>();
+
+        for(String c : categoriasFinales){
+            CategoriaEntity categoria =  this.categoriaRepository.findByNombre(c);
+            categorias.add(categoria);
+        }
+        producto.setCategoriaList(categorias);
+        this.productoRepository.save(producto);
+        return  producto;
+    }
      
 }

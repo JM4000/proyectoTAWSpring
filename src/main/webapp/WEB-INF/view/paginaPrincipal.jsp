@@ -56,7 +56,7 @@
                 <li><a href="/admin/BusquedaCategorias" class="nav-link px-2 link-dark">Categorías</a></li> <%-- solo puede ir si es admin --%>
 
                 <%} else {%>
-                <li><a href="/usuario/<%=user.getIdUsuario()%>/misProductos" class="nav-link px-2 link-dark">Mis Productos </a></li>
+                <li><a href="/usuario/<%=user.getIdUsuario()%>/misProductos" method="get" class="nav-link px-2 link-dark">Mis Productos </a></li>
                 <%
                     }
                 %>
