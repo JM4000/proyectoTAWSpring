@@ -194,7 +194,8 @@ public class UsuarioService {
         this.usuarioRepository.save(u);
     }
     public Boolean isProductFavourite(int idProducto, int idUsuario){
-        return this.productoRepository.isProductFavourite(idUsuario,idProducto).isPresent();
+        List<ProductoEntity> productoEntities = this.productoRepository.isProductFavourite(idUsuario,idProducto).orElse(null);
+        return !productoEntities.isEmpty();
     }
     public void eliminarProducto(int idUsuario, int idProducto) {
         ProductoEntity producto = this.productoRepository.findById(idProducto).orElse(null);
@@ -222,9 +223,6 @@ public class UsuarioService {
 
             productos.add(producto);
             usuarios.add(usuario);
-            
-            producto.setUsuarioList(usuarios);
-            usuario.setProductoList(productos);
 
             this.usuarioRepository.save(usuario);
             this.productoRepository.save(producto);

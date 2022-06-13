@@ -135,6 +135,7 @@ ProductoService {
        
        ProductoEntity producto =  this.productoRepository.findById(idProducto).orElse(null);
        producto.setIdComprador(null);
+       this.productoRepository.save(producto);
        
     }
      public void añadirComprado(Integer idUsuario, Integer idProducto) {
