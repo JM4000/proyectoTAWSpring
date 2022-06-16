@@ -169,16 +169,17 @@
                 <li class="list-group-item"><%= subasta.getProducto().getTitulo()%></li>
                 <img  class="fluid" src="<%= subasta.getProducto().getFoto()%>"/>
                 <li class="p-2">
-                    <a type="button" class="btn btn-danger"
-                            <%if (!fav && !comp){ %> href="usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/ponerFavoritos>">Poner a favoritos
-                        <%}else if (fav && !comp){ %>  href="usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/quitarFavoritos>"">Quitar de favoritos
 
-                        <%}else{%>  hidden> <%}%>
+                            <%if (!fav && !comp){ %>
+                    <a type="button" class="btn btn-danger" href="/usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/ponerFavoritos">Poner a favoritos  </a>
+                        <%}else if (fav && !comp){ %>
+                    <a type="button" class="btn btn-danger" href="/usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/quitarFavoritos">Quitar de favoritos </a>
+                        <%}%>   <%--else{%>   <%}%>--%>
 
-                    </a>
+
                     <a type="button" class="btn btn-outline-success"
                             <% if (!comp){ %> href="/usuario/<%=user.getIdUsuario()%>/<%=subasta.getIdSubasta()%>/subasta"> Participar en subasta
-                        <% } else{ %>  href="/usuario/<%=user.getIdUsuario() %>/<%= subasta.getProducto().getIdProducto()%>/quitarComprados" >Quitar de comprados
+                        <% } else{ %>  href="/usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/quitarComprados" >Quitar de comprados
                         <%} %>
                     </a>
 

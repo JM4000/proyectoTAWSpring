@@ -193,12 +193,15 @@ public class UsuarioService {
 
         this.usuarioRepository.save(u);
     }
-
+    public Boolean isProductFavourite(int idProducto, int idUsuario){
+        List<ProductoEntity> productoEntities = this.productoRepository.isProductFavourite(idUsuario,idProducto).orElse(null);
+        return !productoEntities.isEmpty();
+    }
     public void eliminarProducto(int idUsuario, int idProducto) {
         ProductoEntity producto = this.productoRepository.findById(idProducto).orElse(null);
         UsuarioEntity usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
 
-        if (!this.productoRepository.isProductFavourite(idUsuario, idProducto).equals(null)) { //si el producto  es favorito del usuario
+        if (isProductFavourite(idProducto,idUsuario)) { //si el producto  es favorito del usuario
             List<UsuarioEntity> usuarios = producto.getUsuarioList();
             List<ProductoEntity> productos = usuario.getProductoList();
 
@@ -213,16 +216,13 @@ public class UsuarioService {
     public void insertarProducto(int idUsuario, int idProducto) {
         ProductoEntity producto = this.productoRepository.findById(idProducto).orElse(null);
         UsuarioEntity usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
-
-        if (this.productoRepository.isProductFavourite(idUsuario, idProducto).equals(null)) { //si el producto no es favorito del usuario
+        List <ProductoEntity> isFavourite = this.productoRepository.isProductFavourite(idUsuario, idProducto).orElse(null);
+        if (!isProductFavourite(idProducto,idUsuario)) { //si el producto no es favorito del usuario
             List<UsuarioEntity> usuarios = producto.getUsuarioList();
             List<ProductoEntity> productos = usuario.getProductoList();
 
             productos.add(producto);
             usuarios.add(usuario);
-
-            producto.setUsuarioList(usuarios);
-            usuario.setProductoList(productos);
 
             this.usuarioRepository.save(usuario);
             this.productoRepository.save(producto);
