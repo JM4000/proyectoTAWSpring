@@ -12,8 +12,10 @@ import es.proyectotawspring.service.SubastaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -99,6 +101,54 @@ public class SubastaController extends ProyectoTawController{
         }
     }
 
+
+    @GetMapping("/pujar/{idSubasta}")
+    public String doPujar(@PathVariable("idSubasta") Integer idSubasta,Model model,HttpSession session){
+        if (super.redirigirUsuario("Estandar", session)) {
+            return "redirect:/";
+        } else {
+            SubastaDTO subasta= this.subastaService.findBySubastaId(idSubasta);
+            ProductoDTO productoDTO= this.productoService.find(subasta.getProducto().getIdProducto());
+            model.addAttribute("error","");
+            model.addAttribute("subasta", subasta);
+            model.addAttribute("producto",productoDTO);
+            return "pujas";
+        }
+    }
+
+
+
+    @PostMapping("/guardarPuja")
+    public String doGuardarPuja(@RequestParam("idSubasta")Integer idSubasta,@RequestParam("mayorPostor")Integer idMayorPostor,@RequestParam("precioPuja")Double precioPujar,Model model, HttpSession session) throws MissingServletRequestParameterException{
+
+        if (super.redirigirUsuario("Estandar", session)) {
+            return "redirect:/";
+        } else {
+            SubastaDTO subasta = this.subastaService.findBySubastaId(idSubasta);
+            String strError = "";
+
+            if(precioPujar==null){
+                strError = "*= Indique cantidad a pujar";
+            } else  if(precioPujar > subasta.getPredioActual()){
+
+                this.subastaService.guardarPuja(idSubasta,precioPujar,idMayorPostor);
+
+                subasta = subastaService.findBySubastaId(idSubasta); // esto es necesario porque se han cambiado los parametros
+                strError= "Enhorabuena, has pujado " + precioPujar + " euros";
+            }else{
+                strError = "** No puedes pujar un precio menor a la puja mayor";
+            }
+
+
+
+            model.addAttribute("producto",subasta.getProducto());
+            model.addAttribute("subasta",subasta);
+            model.addAttribute("error",strError);
+            return "pujas";
+        }
+    }
+
+
     @GetMapping("/crearSubasta")
     public String doCrearSubasta(HttpSession session, Model model){
         if (super.redirigirUsuario("Estandar", session)) {
@@ -129,11 +179,6 @@ public class SubastaController extends ProyectoTawController{
                 //temrinar esta parte
                 SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
                 Date fecha = format.parse(strFecha);
-
-               // Producto producto = this.pFacade.crearProductoSubasta(title, desc, foto, precio, categoriasFinales);
-               // this.sFacade.crearSubasta(user.getIdUsuario(), precio, producto.getIdProducto(), fecha);
-
-
                 ProductoEntity p = this.productoService.crearProductoSubasta(producto.getTitulo(),producto.getDescripcion(),producto.getFoto(),producto.getPrecioSalida(),producto.getCategoriaList());
                 UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
                 this.subastaService.crearSubasta(fecha,p.getIdProducto(),p.getPrecioSalida(),usuario.getIdUsuario());
@@ -141,10 +186,6 @@ public class SubastaController extends ProyectoTawController{
                 for (CategoriaEntity c : p.getCategoriaList()) {
                     this.categoriaService.editarRelacionCategoriaProducto(p.getIdProducto(), c.getIdCategoria());
                 }
-
-
-
-
 
                     return "redirect:/usuario/" + usuario.getIdUsuario() + "/misProductos";
             }

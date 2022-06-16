@@ -178,7 +178,7 @@
 
 
                     <a type="button" class="btn btn-outline-success"
-                            <% if (!comp){ %> href="/usuario/<%=user.getIdUsuario()%>/<%=subasta.getIdSubasta()%>/subasta"> Participar en subasta
+                            <% if (!comp){ %> href="/subasta/pujar/<%=subasta.getIdSubasta()%>"> Participar en subasta
                         <% } else{ %>  href="/usuario/<%=user.getIdUsuario()%>/<%= subasta.getProducto().getIdProducto()%>/quitarComprados" >Quitar de comprados
                         <%} %>
                     </a>

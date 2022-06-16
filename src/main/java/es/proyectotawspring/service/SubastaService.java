@@ -131,4 +131,17 @@ public class SubastaService {
         this.subastaRepository.save(s);
 
     }
+
+
+
+    public void guardarPuja(Integer idSubasta,Double precioPujar, Integer idMayorPostor){
+         SubastaEntity subasta = this.subastaRepository.findByIdSubasta(idSubasta);
+         UsuarioEntity usuario = this.usuarioRepository.findById(idMayorPostor).orElse(null);
+
+         subasta.setPredioActual(precioPujar);
+         subasta.setMayorPostor(usuario);
+         this.subastaRepository.save(subasta);
+
+    }
+
 }
