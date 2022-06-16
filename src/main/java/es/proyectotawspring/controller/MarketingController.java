@@ -1,6 +1,7 @@
 package es.proyectotawspring.controller;
 
 import es.proyectotawspring.Util.Busqueda;
+import es.proyectotawspring.Util.BusquedaParaLista;
 import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.dto.ListaDTO;
 import es.proyectotawspring.dto.ProductoDTO;
@@ -11,10 +12,7 @@ import es.proyectotawspring.service.ListaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -84,6 +82,44 @@ public class MarketingController extends ProyectoTawController{
             this.listaService.crearLista(nombre, categoria);
 
             return "redirect:/marketing/listasMarketing";
+        }
+    }
+
+    @GetMapping("/{idlista}/verLista")
+    public String verLista(@PathVariable("idlista") Integer idlista, Model model, HttpSession session){
+        if (super.redirigirUsuario("Marketing", session)) {
+            return "redirect:/";
+        } else {
+            ListaDTO lista = this.listaService.find(idlista);
+
+            model.addAttribute("lista", lista);
+            BusquedaParaLista busqueda = new BusquedaParaLista();
+            busqueda.setIdlist(idlista);
+            model.addAttribute("busqueda", busqueda);
+
+            return "editorLista";
+        }
+
+    }
+
+    @PostMapping("/BusquedaUsuarios")
+    public String buscarUsuarios(Model model, HttpSession session, @ModelAttribute("busqueda") Busqueda busqueda) {
+        if (super.redirigirUsuario("Marketing", session)) {
+            return "redirect:/";
+        } else {
+
+            List<UsuarioDTO> usuarios;
+            String like = (String) busqueda.getBusqueda();
+            Integer filtro = busqueda.getFiltro();
+
+            usuarios = super.getUsuarioService().getUsuariosLike(like, filtro);
+
+
+            model.addAttribute("lista", );
+            model.addAttribute("usuarios", usuarios);
+            model.addAttribute("busqueda", busqueda);
+
+            return "editorLista";
         }
     }
 }
