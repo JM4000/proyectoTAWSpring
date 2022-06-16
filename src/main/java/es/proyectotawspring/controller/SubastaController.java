@@ -1,5 +1,6 @@
 package es.proyectotawspring.controller;
 
+import es.proyectotawspring.Util.ObjetoPuja;
 import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.dto.ProductoDTO;
 import es.proyectotawspring.dto.SubastaDTO;
@@ -108,7 +109,16 @@ public class SubastaController extends ProyectoTawController{
             return "redirect:/";
         } else {
             SubastaDTO subasta= this.subastaService.findBySubastaId(idSubasta);
+            ObjetoPuja objetoPuja = new ObjetoPuja();
+            objetoPuja.setIdSubasta(idSubasta);
+
+
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+            objetoPuja.setIdMayorPostor(usuario.getIdUsuario());
+
+
             ProductoDTO productoDTO= this.productoService.find(subasta.getProducto().getIdProducto());
+            model.addAttribute("objetoPuja",objetoPuja);
             model.addAttribute("error","");
             model.addAttribute("subasta", subasta);
             model.addAttribute("producto",productoDTO);
@@ -119,28 +129,29 @@ public class SubastaController extends ProyectoTawController{
 
 
     @PostMapping("/guardarPuja")
-    public String doGuardarPuja(@RequestParam("idSubasta")Integer idSubasta,@RequestParam("mayorPostor")Integer idMayorPostor,@RequestParam("precioPuja")Double precioPujar,Model model, HttpSession session) throws MissingServletRequestParameterException{
+    public String doGuardarPuja(@ModelAttribute("objetoPuja")ObjetoPuja objetoPuja,Model model, HttpSession session) throws MissingServletRequestParameterException{
 
         if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
         } else {
-            SubastaDTO subasta = this.subastaService.findBySubastaId(idSubasta);
+            SubastaDTO subasta = this.subastaService.findBySubastaId(objetoPuja.getIdSubasta());
             String strError = "";
 
-            if(precioPujar==null){
-                strError = "*= Indique cantidad a pujar";
-            } else  if(precioPujar > subasta.getPredioActual()){
 
-                this.subastaService.guardarPuja(idSubasta,precioPujar,idMayorPostor);
+            if(objetoPuja.getCantidad().isEmpty() || objetoPuja.getCantidad()==null){
+                strError = "** Indique cantidad a pujar";
+            } else  if(Double.parseDouble(objetoPuja.getCantidad()) > subasta.getPredioActual()){
 
-                subasta = subastaService.findBySubastaId(idSubasta); // esto es necesario porque se han cambiado los parametros
-                strError= "Enhorabuena, has pujado " + precioPujar + " euros";
+                this.subastaService.guardarPuja(objetoPuja.getIdSubasta(), Double.parseDouble(objetoPuja.getCantidad()), objetoPuja.getIdMayorPostor());
+
+                subasta = subastaService.findBySubastaId(objetoPuja.getIdSubasta()); // esto es necesario porque se han cambiado los parametros
+                strError= "Enhorabuena, has pujado " + objetoPuja.getCantidad() + " euros";
             }else{
                 strError = "** No puedes pujar un precio menor a la puja mayor";
             }
 
 
-
+            model.addAttribute("objetoPuja",objetoPuja);
             model.addAttribute("producto",subasta.getProducto());
             model.addAttribute("subasta",subasta);
             model.addAttribute("error",strError);

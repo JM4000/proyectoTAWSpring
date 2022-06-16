@@ -84,17 +84,14 @@
 
         <div class="col col-10 p-3">
             <form class="border"action="/subasta/guardarPuja" method="post">
-                
-
+                <form:form class="border" action="/subasta/guardarPuja" method="post" modelAttribute="objetoPuja">
+                <form:input path="idSubasta" type="hidden"/>
+                 <form:input path="idMayorPostor" type="hidden"/>
                 <ul class="list-group list-group-vertical">
                     <li class="list-group-item"><%= producto.getTitulo()%></li>
                     <ul class="p-3">
                         <img  class="fluid" src="<%= producto.getFoto()%>">
                         <ul class="p-3">
-                            <input type="hidden" name="idSubasta" id="idSubasta" value="<%= s.getIdSubasta() %>" />
-                            <input type="hidden" name="mayorPostor" id="mayorPostor" value="<%= idUsuario %>" />
-
-
 
                             <li class="list-group-item"><%= producto.getDescripcion() %></li>
                             <ul class="p-3">
@@ -102,16 +99,15 @@
 
                                 <li class="list-group-item"> Puja mayor : <%= s.getPredioActual() %> € </li>
                                 <ul class="p-3">
-                                    Cantidad a pujar :  <input type="text" name="precioPuja" id="apuesta" value="" /> €
+                                    Cantidad a pujar :  <form:input path="cantidad" type="text"/>  €
                                     <button class="btn btn-outline-success" type="submit">Pujar</button>
 
                                     <lu class="p-3">  <%=error%></lu>
 
 
-
                                     </li>
                                 </ul>
-            </form>
+                                </form:form>
         </div>
 
     </div>
