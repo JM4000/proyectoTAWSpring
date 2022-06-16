@@ -56,9 +56,9 @@
                 <%
                     if(user.getTipoUsuario().getTipoUsuario().toString().equals("Administrador")){
                 %>
-                <li><a href="<%= request.getContextPath()%>/ListaUsuariosServlet?filtro=1" class="nav-link px-2 link-dark">Clientes</a></li>
-                <li><a href="<%= request.getContextPath()%>/ListaProductosServlet" class="nav-link px-2 link-dark">Productos</a></li>
-                <li><a href="<%= request.getContextPath()%>/EditorCategoriasServlet" class="nav-link px-2 link-dark">Categorías</a></li>
+                <li><a href="/admin/ListaUsuarios" class="nav-link px-2 link-dark">Clientes</a></li>
+                <li><a href="/admin/ListaProductos"class="nav-link px-2 link-dark">Productos</a></li>
+                <li><a href="/admin/EditorCategorias" class="nav-link px-2 link-dark">Categorías</a></li>
 
 
                 <% } %>
@@ -72,7 +72,7 @@
                     <img src="<%= request.getContextPath()%>/Images/list.svg" alt="No File" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="<%= request.getContextPath()%>/CerrarSesionServlet">Cerrar Sesión</a></li>
+                    <li><a class="dropdown-item" href="/CerrarSesion">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>

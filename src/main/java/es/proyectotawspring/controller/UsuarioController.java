@@ -1,6 +1,7 @@
 package es.proyectotawspring.controller;
 
 
+import es.proyectotawspring.Util.Busqueda;
 import es.proyectotawspring.Util.FiltroPaginaPrincipal;
 import es.proyectotawspring.dto.CategoriaDTO;
 import es.proyectotawspring.dto.ProductoDTO;
@@ -70,6 +71,7 @@ public class UsuarioController extends ProyectoTawController {
             return"redirect:/";
         }else{ */
             List<ProductoDTO> productos = this.productoService.findAll();
+            model.addAttribute("busqueda", new Busqueda());
             model.addAttribute("productos",productos);
             model.addAttribute("errorCategorias","");
             return "listaProductosEnVenta";
@@ -104,6 +106,28 @@ public class UsuarioController extends ProyectoTawController {
             return "paginaPrincipal";
        // }
     }
+
+
+    @PostMapping("/filtroMisProductos")
+    public String doFiltradoMisProductos(Model model, HttpSession session, @ModelAttribute("busqueda")Busqueda busqueda){
+    //    if (super.redirigirUsuario("Estandar", session)) {
+      //      return "redirect:/";
+       // } else {
+
+            List<ProductoDTO> productos;
+            String like = (String) busqueda.getBusqueda();
+            Integer filtro = busqueda.getFiltro();
+
+            productos = this.productoService.findFiltered(filtro, like);
+
+            model.addAttribute("productos", productos);
+            model.addAttribute("errorCategorias","");
+
+
+            return "listaProductosEnVenta";
+        //}
+    }
+
     @PostMapping("/filtroPaginaPrincipal")
     public String doFiltrarPaginaPrincipal(  @ModelAttribute("filtroPaginaPrincipal") FiltroPaginaPrincipal filtroPaginaPrincipal ,Model model, HttpSession session){
         /* if (super.redirigirUsuario("Estandar", session)) {

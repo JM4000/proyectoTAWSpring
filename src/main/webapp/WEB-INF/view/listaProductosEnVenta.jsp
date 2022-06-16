@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : listaProductosEnVenta
     Created on : 20-abr-2022, 12:01:08
@@ -23,6 +24,9 @@
 </head>
 <body>
 <header class="p-3 mb-3 border-bottom">
+    <%
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
+    %>
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
@@ -30,9 +34,9 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="<%= request.getContextPath()%>/PaginaPrincipalServlet" class="nav-link px-2 link-secondary">Página Principal</a></li>
+                <li><a href="/usuario/<%=user.getIdUsuario()%>/paginaPrincipal" class="nav-link px-2 link-secondary">Página Principal</a></li>
 
-                <li><a href="#" class="nav-link px-2 link-primary">Mis productos</a></li>
+                <li><a href="/usuario/<%=user.getIdUsuario()%>/misProductos" class="nav-link px-2 link-primary">Mis productos</a></li>
 
             </ul>
 
@@ -42,7 +46,7 @@
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
 
-                    <li><a class="dropdown-item" href="<%= request.getContextPath()%>/CerrarSesionServlet">Cerrar Sesión</a></li>
+                    <li><a class="dropdown-item" href="/CerrarSesion">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>
@@ -53,20 +57,19 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="input-group-prepend">
-                    <form class="d-flex" action="${pageContext.request.contextPath}/BusquedaProductosVendedorServlet?id=1" method="get">
-                        <select class="custom-select" name="filtro" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <option selected value="1">Tipo de Búsqueda</option>
-                            <option value="1">Nombre</option>
-                            <option value="2">Categoría</option>
-                        </select>
+                    <form:form class="d-flex" action="/usuario/filtroMisProductos" method="post" modelAttribute="busqueda">
+                        <form:select class="custom-select" name="filtro" type="button" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false" path="filtro">
+                            <form:option selected="true" value="1">Tipo de Búsqueda</form:option>
+                            <form:option value="1">Nombre</form:option>
+                            <form:option value="2">Categoría</form:option>
+                        </form:select><br>
 
-                        <input class="form-control me-2" type="search" autocomplete="off" placeholder="Busqueda..." aria-label="Search" name="busqueda">
-                        <button class="btn btn-outline-success" type="submit">Buscar</button>
-
+                        <form:input class="form-control me-2" type="search" autocomplete="off" placeholder="Busqueda..."
+                                    aria-label="Search" name="busqueda" path="busqueda"/>
+                        <form:button class="btn btn-outline-success" type="submit">Buscar</form:button>
                         <a type="button" class="btn btn-danger" href="/subasta/crearSubasta">Subastar producto</a>
-
-
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>
@@ -75,9 +78,6 @@
         <%
 
             UsuarioDTO usuario =  (UsuarioDTO) session.getAttribute("usuario");
-
-
-
             List<ProductoDTO> productos = (List) request.getAttribute("productos");
             if(productos!=null) {
                 for (ProductoDTO producto : productos) {
