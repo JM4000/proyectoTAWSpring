@@ -122,4 +122,28 @@ public class MarketingController extends ProyectoTawController{
             return "editorLista";
         }
     }
+
+    @PostMapping("/modificarLista")
+    public String modificarLista(Model model, HttpSession session, @RequestParam("edit") String edit, @RequestParam("id") Integer id){
+        if (super.redirigirUsuario("Marketing", session)) {
+            return "redirect:/";
+        } else {
+
+            this.listaService.editarLista(id, edit);
+
+            return "redirect:/marketing/listasMarketing";
+        }
+    }
+
+    @GetMapping("/{id}/eliminarLista")
+    public String eliminarLista(HttpSession session, @PathVariable("id") Integer id){
+        if (super.redirigirUsuario("Marketing", session)) {
+            return "redirect:/";
+        } else {
+
+            this.listaService.remove(id);
+
+            return "redirect:/marketing/listasMarketing";
+        }
+    }
 }

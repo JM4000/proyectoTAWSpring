@@ -63,9 +63,9 @@ public class ListaService {
         return toDTOList(this.listaRepository.findAll());
     }
 
-    public void editarLista(String id, String edit) {
+    public void editarLista(Integer id, String edit) {
         if (id != null && edit != null) {
-            ListaEntity lista = this.listaRepository.findById(Integer.parseInt(id)).orElse(null);
+            ListaEntity lista = this.listaRepository.findById(id).orElse(null);
             lista.setNombre(edit);
             this.listaRepository.save(lista);
         }

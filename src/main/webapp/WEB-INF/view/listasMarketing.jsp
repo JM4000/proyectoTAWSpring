@@ -31,7 +31,7 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/ListasMarketingServlet" class="nav-link px-2 link-dark">Listas de Categorias</a></li>
+                <li>Listas de Categorias</li>
             </ul>
 
             <div class="dropdown text-end">
@@ -62,12 +62,12 @@
                         <%
                             for (ListaDTO lista : listas) {
                         %>
-                        <form action="/marketing/editorLista">
+                        <form action="/marketing/modificarLista">
                             <ul class="col col-12 list-group list-group-horizontal">
-                                <input name="edit" id="myInputID" type="text" class="list-group-item col-8" value="<%=lista.getnombre()%>"></input>
+                                <input name="edit" type="text" class="list-group-item col-8" value="<%=lista.getnombre()%>"/>
                                 <li class="p-2">
                                     <button  type="submit" name="id" value="<%=lista.getidlista()%>" class="btn btn-warning" >Editar</button>
-                                    <a type="button" class="btn btn-danger" href="marketing/<%=lista.getidlista()%>/eliminarLista">Eliminar</a>
+                                    <a type="button" class="btn btn-danger" href="/marketing/<%=lista.getidlista()%>/eliminarLista">Eliminar</a>
                                     <a type="button" class="btn btn-danger" href="/marketing/<%=lista.getidlista()%>/verLista">Ver lista de compradores</a>
                                 </li>
                             </ul>
