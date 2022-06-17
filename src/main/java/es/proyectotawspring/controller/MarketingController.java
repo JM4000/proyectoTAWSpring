@@ -2,13 +2,11 @@ package es.proyectotawspring.controller;
 
 import es.proyectotawspring.Util.Busqueda;
 import es.proyectotawspring.Util.BusquedaParaLista;
-import es.proyectotawspring.dto.CategoriaDTO;
-import es.proyectotawspring.dto.ListaDTO;
-import es.proyectotawspring.dto.ProductoDTO;
-import es.proyectotawspring.dto.UsuarioDTO;
+import es.proyectotawspring.dto.*;
 import es.proyectotawspring.entity.ListaEntity;
 import es.proyectotawspring.service.CategoriaService;
 import es.proyectotawspring.service.ListaService;
+import es.proyectotawspring.service.NotificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +20,7 @@ import java.util.List;
 public class MarketingController extends ProyectoTawController{
     private ListaService listaService;
     private CategoriaService categoriaService;
+    private NotificacionService notificacionService;
 
     public ListaService getListaService() {
         return listaService;
@@ -39,6 +38,15 @@ public class MarketingController extends ProyectoTawController{
     @Autowired
     public void setCategoriaService(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
+    }
+
+    public NotificacionService getNotificacionService() {
+        return notificacionService;
+    }
+
+    @Autowired
+    public void setNotificacionService(NotificacionService notificacionService) {
+        this.notificacionService = notificacionService;
     }
 
     @GetMapping("/listasMarketing")
@@ -123,7 +131,7 @@ public class MarketingController extends ProyectoTawController{
         }
     }
 
-    @PostMapping("/modificarLista")
+    @GetMapping("/modificarLista")
     public String modificarLista(Model model, HttpSession session, @RequestParam("edit") String edit, @RequestParam("id") Integer id){
         if (super.redirigirUsuario("Marketing", session)) {
             return "redirect:/";
@@ -142,6 +150,24 @@ public class MarketingController extends ProyectoTawController{
         } else {
 
             this.listaService.remove(id);
+
+            return "redirect:/marketing/listasMarketing";
+        }
+    }
+
+    @PostMapping("/notificarLista/{idlista}")
+    public String notificarLista(HttpSession session, Model model, @RequestParam("mensaje") String mensaje, @PathVariable("idlista") Integer idlista){
+        if (super.redirigirUsuario("Marketing", session)) {
+            return "redirect:/";
+        } else {
+            ListaDTO lista = this.listaService.find(idlista);
+            List<UsuarioDTO> usuarios = lista.getusuarioList();
+
+            NotificacionDTO notificacionDTO;
+
+            for (UsuarioDTO usuario : usuarios) {
+                this.notificacionService.crearNotificacion(mensaje, usuario);
+            }
 
             return "redirect:/marketing/listasMarketing";
         }

@@ -64,11 +64,11 @@
                         %>
                         <form action="/marketing/modificarLista">
                             <ul class="col col-12 list-group list-group-horizontal">
-                                <input name="edit" type="text" class="list-group-item col-8" value="<%=lista.getnombre()%>"/>
+                                <input name="edit" type="text" class="list-group-item col-6" value="<%=lista.getnombre()%>"/>
                                 <li class="p-2">
-                                    <button  type="submit" name="id" value="<%=lista.getidlista()%>" class="btn btn-warning" >Editar</button>
+                                    <button  type="submit" name="id" value="<%=lista.getidlista()%>" class="btn btn-warning" >Renombrar</button>
                                     <a type="button" class="btn btn-danger" href="/marketing/<%=lista.getidlista()%>/eliminarLista">Eliminar</a>
-                                    <a type="button" class="btn btn-danger" href="/marketing/<%=lista.getidlista()%>/verLista">Ver lista de compradores</a>
+                                    <a type="button" class="btn btn-primary" href="/marketing/<%=lista.getidlista()%>/verLista">Ver lista de compradores</a>
                                 </li>
                             </ul>
                         </form>

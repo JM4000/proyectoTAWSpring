@@ -80,17 +80,22 @@
                 <div class="container p-3">
                     <div class="row">
                         <%
+                            if (!usuarios.isEmpty()){
+                        %>
+                        <form action="/marketing/notificarLista/<%=lista.getidlista()%>" method="post">
+                            <textarea name="mensaje"></textarea>
+                            <button  type="submit" name="id" class="btn btn-primary">Notificar Lista</button>
+                        </form>
+                        <%
+                            }
                             for (UsuarioDTO usuario : usuarios) {
                         %>
-                        <form action="${pageContext.request.contextPath}/NotificarUsuarioListaServlet">
                             <ul class="col col-12 list-group list-group-horizontal">
                                 <li class="list-group-item col-8"><%= usuario.toString() %></li>
                                 <li class="p-2">
-                                    <button  type="submit" name="id" value="<%=usuario.getIdUsuario()%>" class="btn btn-warning" >Notificar</button>
-                                    <a type="button" class="btn btn-danger" href="${pageContext.request.contextPath}/EliminarUsuarioListaServlet?id=<%=usuario.getIdUsuario()%>&idlista=<%=lista.getidlista()%>">Eliminar</a>
+                                    <a type="button" class="btn btn-danger" href="/marketing/eliminarUsuarioLista/<%=usuario.getIdUsuario()%>/<%=lista.getidlista()%>">Eliminar</a>
                                 </li>
                             </ul>
-                        </form>
 
                         <% }%>
                     </div>
