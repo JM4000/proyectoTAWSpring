@@ -3,7 +3,6 @@ package es.proyectotawspring.controller;
 import es.proyectotawspring.Util.Busqueda;
 import es.proyectotawspring.Util.BusquedaParaLista;
 import es.proyectotawspring.dto.*;
-import es.proyectotawspring.entity.ListaEntity;
 import es.proyectotawspring.service.CategoriaService;
 import es.proyectotawspring.service.ListaService;
 import es.proyectotawspring.service.NotificacionService;
@@ -99,10 +98,12 @@ public class MarketingController extends ProyectoTawController{
             return "redirect:/";
         } else {
             ListaDTO lista = this.listaService.find(idlista);
+            List<UsuarioDTO> usuarios = lista.getusuarioList();
+            BusquedaParaLista busqueda = new BusquedaParaLista();
+            busqueda.setIdlista(idlista);
 
             model.addAttribute("lista", lista);
-            BusquedaParaLista busqueda = new BusquedaParaLista();
-            busqueda.setIdlist(idlista);
+            model.addAttribute("usuarios", usuarios);
             model.addAttribute("busqueda", busqueda);
 
             return "editorLista";
@@ -111,7 +112,7 @@ public class MarketingController extends ProyectoTawController{
     }
 
     @PostMapping("/BusquedaUsuarios")
-    public String buscarUsuarios(Model model, HttpSession session, @ModelAttribute("busqueda") Busqueda busqueda) {
+    public String buscarUsuarios(Model model, HttpSession session, @ModelAttribute("busqueda") BusquedaParaLista busqueda) {
         if (super.redirigirUsuario("Marketing", session)) {
             return "redirect:/";
         } else {
@@ -119,11 +120,17 @@ public class MarketingController extends ProyectoTawController{
             List<UsuarioDTO> usuarios;
             String like = (String) busqueda.getBusqueda();
             Integer filtro = busqueda.getFiltro();
+            Integer idlista = busqueda.getIdlista();
 
-            usuarios = super.getUsuarioService().getUsuariosLike(like, filtro);
+            ListaDTO lista = this.listaService.find(idlista);
 
+            if (like == "" || like == null) {
+                usuarios = lista.getusuarioList();
+            } else {
+                usuarios = super.getUsuarioService().getUsuariosLike(like, filtro);
+            }
 
-            //model.addAttribute("lista", );
+            model.addAttribute("lista", lista);
             model.addAttribute("usuarios", usuarios);
             model.addAttribute("busqueda", busqueda);
 

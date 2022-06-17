@@ -54,7 +54,7 @@
                         ListaDTO lista = (ListaDTO) request.getAttribute("lista");
                     %>
                     <form:form class="d-flex" action="/marketing/BusquedaUsuarios" method="post" modelAttribute="busqueda">
-                        <form:hidden path="idlist"/>
+                        <form:hidden path="idlista"/>
                         <form:select class="custom-select" name="filtro" type="button" data-toggle="dropdown"
                                      aria-haspopup="true" aria-expanded="false" path="filtro">
                             <form:option selected="true" value="1">Tipo de Búsqueda</form:option>
@@ -75,7 +75,7 @@
                 </div>
 
                 <%
-                    List<UsuarioDTO> usuarios = lista.getusuarioList();
+                    List<UsuarioDTO> usuarios = (List<UsuarioDTO>) request.getAttribute("usuarios");
                 %>
                 <div class="container p-3">
                     <div class="row">

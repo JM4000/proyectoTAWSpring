@@ -3,7 +3,7 @@ package es.proyectotawspring.Util;
 public class BusquedaParaLista {
     private Integer filtro;
     private String busqueda;
-    private Integer idlist;
+    private Integer idlista;
 
     public Integer getFiltro() {
         return filtro;
@@ -21,15 +21,15 @@ public class BusquedaParaLista {
         this.busqueda = busqueda;
     }
 
-    public Integer getIdlist() {
-        return idlist;
+    public Integer getIdlista() {
+        return idlista;
     }
 
-    public void setIdlist(Integer idlist) {
-        this.idlist = idlist;
+    public void setIdlista(Integer idlista) {
+        this.idlista = idlista;
     }
 
     public String toString(){
-        return filtro + " " + busqueda + " " + idlist;
+        return filtro + " " + busqueda + " " + idlista;
     }
 }
