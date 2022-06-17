@@ -6,6 +6,7 @@ import es.proyectotawspring.dto.*;
 import es.proyectotawspring.service.CategoriaService;
 import es.proyectotawspring.service.ListaService;
 import es.proyectotawspring.service.NotificacionService;
+import es.proyectotawspring.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,11 +100,19 @@ public class MarketingController extends ProyectoTawController{
         } else {
             ListaDTO lista = this.listaService.find(idlista);
             List<UsuarioDTO> usuarios = lista.getusuarioList();
+            List<UsuarioDTO> usuariosAnadir;
+            if (usuarios.size() == 0){
+                usuariosAnadir = super.getUsuarioService().findAll();
+            } else {
+                usuariosAnadir = super.getUsuarioService().findUsuariosNotInLista(usuarios);
+            }
+
             BusquedaParaLista busqueda = new BusquedaParaLista();
             busqueda.setIdlista(idlista);
 
             model.addAttribute("lista", lista);
             model.addAttribute("usuarios", usuarios);
+            model.addAttribute("usuariosAnadir", usuariosAnadir);
             model.addAttribute("busqueda", busqueda);
 
             return "editorLista";
@@ -122,16 +131,20 @@ public class MarketingController extends ProyectoTawController{
             Integer filtro = busqueda.getFiltro();
             Integer idlista = busqueda.getIdlista();
 
+
             ListaDTO lista = this.listaService.find(idlista);
 
             if (like == "" || like == null) {
                 usuarios = lista.getusuarioList();
+
             } else {
-                usuarios = super.getUsuarioService().getUsuariosLike(like, filtro);
+                usuarios = super.getUsuarioService().getUsuariosLikeInLista(like, filtro, lista.getusuarioList());
             }
+            List<UsuarioDTO> usuariosAnadir = super.getUsuarioService().findUsuariosNotInLista(lista.getusuarioList());
 
             model.addAttribute("lista", lista);
             model.addAttribute("usuarios", usuarios);
+            model.addAttribute("usuariosAnadir", usuariosAnadir);
             model.addAttribute("busqueda", busqueda);
 
             return "editorLista";
@@ -177,6 +190,30 @@ public class MarketingController extends ProyectoTawController{
             }
 
             return "redirect:/marketing/listasMarketing";
+        }
+    }
+
+    @GetMapping("/eliminarUsuarioLista/{idUsuario}/{idlista}")
+    public String eliminarUsuarioLista(HttpSession session, @PathVariable("idUsuario") Integer idUsuario, @PathVariable("idlista") Integer idlista){
+        if (super.redirigirUsuario("Marketing", session)) {
+            return "redirect:/";
+        } else {
+
+            this.listaService.removeUsuarioFromLista(idUsuario, idlista);
+
+            return "redirect:/marketing/" + idlista + "/verLista";
+        }
+    }
+
+    @GetMapping("/anadirUsuarioLista/{idUsuario}/{idlista}")
+    public String anadirUsuarioLista(HttpSession session, @PathVariable("idUsuario") Integer idUsuario, @PathVariable("idlista") Integer idlista){
+        if (super.redirigirUsuario("Marketing", session)) {
+            return "redirect:/";
+        } else {
+
+            this.listaService.addUsuarioToLista(idUsuario, idlista);
+
+            return "redirect:/marketing/" + idlista + "/verLista";
         }
     }
 }

@@ -27,4 +27,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
     List<UsuarioEntity> findAllByTipoUsuarioLike(@Param("busqueda") String like);
     @Query("select a from UsuarioEntity a where a.nombreUsuario like CONCAT('%', :busqueda, '%')")
     List<UsuarioEntity> findAllByNombreUsuarioLike(@Param("busqueda") String like);
+
+    List<UsuarioEntity> findUsuarioEntityByIdUsuarioNotIn(List<Integer> idUsuarios);
 }

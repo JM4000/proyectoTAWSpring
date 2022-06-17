@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 import static es.proyectotawspring.entity.UsuarioEntity.toDTOList;
@@ -230,4 +231,61 @@ public class UsuarioService {
 
     }
 
+    public List<UsuarioDTO> findUsuariosNotInLista(List<UsuarioDTO> usuarios){
+        List<Integer> idUsuarios = new ArrayList<>();
+
+        for (UsuarioDTO usuario : usuarios) {
+            idUsuarios.add(usuario.getIdUsuario());
+        }
+        List<UsuarioDTO> usuariosEncontrados = toDTOList(this.usuarioRepository.findUsuarioEntityByIdUsuarioNotIn(idUsuarios));
+
+        return usuariosEncontrados;
+    }
+
+    public List<UsuarioDTO> getUsuariosLikeInLista(String like, Integer filtro, List<UsuarioDTO> usuariosInList){
+        List<UsuarioDTO> usuarios;
+
+        if (like != null) {
+            switch (filtro) {
+                case (2): //nombre
+                    usuarios = toDTOList(this.usuarioRepository.findAllByNombreLike(like));
+                    break;
+                case (3)://apellido
+                    usuarios = toDTOList(this.usuarioRepository.findAllByApellidosLike(like));
+                    break;
+                case (4)://domicilio
+                    usuarios = toDTOList(this.usuarioRepository.findAllByDomicilioLike(like));
+                    break;
+                case (5)://ciudad
+                    usuarios = toDTOList(this.usuarioRepository.findAllByCiudadLike(like));
+                    break;
+                case (6)://edad
+                    usuarios = toDTOList(this.usuarioRepository.findAllByEdad(Integer.parseInt(like)));
+                    break;
+                case (7)://genero
+                    usuarios = toDTOList(this.usuarioRepository.findAllByGeneroLike(like));
+                    break;
+                case (8)://tipoUsuario
+                    usuarios = toDTOList(this.usuarioRepository.findAllByTipoUsuarioLike(like));
+                    break;
+                default://nombreUsuario
+                    usuarios = toDTOList(this.usuarioRepository.findAllByNombreUsuarioLike(like));
+                    break;
+            }
+
+        } else {
+            usuarios = toDTOList(this.usuarioRepository.findAll());
+        }
+        // ??? no entiendo por qué no funciona
+        List<UsuarioDTO> usuariosFinal = usuarios;
+        for (UsuarioDTO usuario : usuarios){
+            for (UsuarioDTO usuarioInList : usuariosInList){
+                if (usuario.getIdUsuario() == usuarioInList.getIdUsuario()){
+                    usuarios.remove(usuario.getIdUsuario());
+                }
+            }
+
+        }
+        return usuarios;
+    }
 }

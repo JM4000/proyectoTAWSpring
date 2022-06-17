@@ -105,9 +105,19 @@
         <div class="col col-6">
             <div class="container rows-2">
                 <div class="container align-items-right">
-                    <form class="d-flex" action="${pageContext.request.contextPath}/AnadirUsuarioServlet?idlista=<%=lista.getidlista()%>" method="post">
-                        <button class="btn btn-outline-success" type="submit">Añadir Usuario</button>
                     </form>
+                    <%
+                        List<UsuarioDTO> usuariosAnadir = (List<UsuarioDTO>) request.getAttribute("usuariosAnadir");
+                        for (UsuarioDTO usuario : usuariosAnadir) {
+                    %>
+                    <ul class="col col-12 list-group list-group-horizontal">
+                        <li class="list-group-item col-8"><%= usuario.toString() %></li>
+                        <li class="p-2">
+                            <a type="button" class="btn btn-danger" href="/marketing/anadirUsuarioLista/<%=usuario.getIdUsuario()%>/<%=lista.getidlista()%>">Añadir</a>
+                        </li>
+                    </ul>
+
+                    <% }%>
                 </div>
             </div>
         </div>

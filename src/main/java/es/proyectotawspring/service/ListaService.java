@@ -27,22 +27,21 @@ import static es.proyectotawspring.entity.ListaEntity.toDTOList;
 public class ListaService {
 
     private CategoriaRepository categoriaRepository;
+    private UsuarioRepository usuarioRepository;
+    private ListaRepository listaRepository;
 
     @Autowired
-    private void setUsuarioRepository(CategoriaRepository categoriaRepository){
+    private void setCategoriaRepository(CategoriaRepository categoriaRepository){
         this.categoriaRepository = categoriaRepository;
     }
-    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private void setUsuarioRepository(UsuarioRepository usuarioRepository){
         this.usuarioRepository = usuarioRepository;
     }
 
-    private ListaRepository listaRepository;
-
     @Autowired
-    private void setUsuarioRepository(ListaRepository listaRepository){
+    private void setListaRepository(ListaRepository listaRepository){
         this.listaRepository = listaRepository;
     }
     
