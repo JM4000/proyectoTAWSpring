@@ -276,15 +276,13 @@ public class UsuarioService {
         } else {
             usuarios = toDTOList(this.usuarioRepository.findAll());
         }
-        // ??? no entiendo por qué no funciona
-        List<UsuarioDTO> usuariosFinal = usuarios;
+        List<UsuarioDTO> usuariosFinal = new ArrayList<>();
         for (UsuarioDTO usuario : usuarios){
             for (UsuarioDTO usuarioInList : usuariosInList){
                 if (usuario.getIdUsuario() == usuarioInList.getIdUsuario()){
                     usuariosFinal.add(usuario);
                 }
             }
-
         }
         return usuariosFinal;
     }
