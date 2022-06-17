@@ -3,16 +3,11 @@ package es.proyectotawspring.controller;
 
 import es.proyectotawspring.Util.Busqueda;
 import es.proyectotawspring.Util.FiltroPaginaPrincipal;
-import es.proyectotawspring.dto.CategoriaDTO;
-import es.proyectotawspring.dto.ProductoDTO;
-import es.proyectotawspring.dto.SubastaDTO;
-import es.proyectotawspring.dto.UsuarioDTO;
-import es.proyectotawspring.service.CategoriaService;
-import es.proyectotawspring.service.ProductoService;
-import es.proyectotawspring.service.SubastaService;
-import es.proyectotawspring.service.UsuarioService;
+import es.proyectotawspring.dto.*;
+import es.proyectotawspring.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,19 +20,8 @@ public class UsuarioController extends ProyectoTawController {
     private ProductoService productoService;
     private CategoriaService categoriaService;
     private SubastaService subastaService;
+    private NotificacionService notificacionService;
 
-    @Override
-    public UsuarioService getUsuarioService() {
-        return usuarioService;
-    }
-
-    @Autowired
-    @Override
-    public void setUsuarioService(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
-    private UsuarioService usuarioService;
     public CategoriaService getCategoriaService() {
         return categoriaService;
     }
@@ -63,7 +47,14 @@ public class UsuarioController extends ProyectoTawController {
         this.productoService = productoService;
     }
 
+    public NotificacionService getNotificacionService() {
+        return notificacionService;
+    }
 
+    @Autowired
+    public void setNotificacionService(NotificacionService notificacionService) {
+        this.notificacionService = notificacionService;
+    }
 
     @GetMapping("/{id}/misProductos")
     public String doListarMisProductos(@PathVariable("id") Integer id, Model model, HttpSession session){
@@ -186,7 +177,7 @@ public class UsuarioController extends ProyectoTawController {
             return "redirect:/";
         }else {*/
 
-            this.usuarioService.eliminarProducto(user, producto);
+            super.getUsuarioService().eliminarProducto(user, producto);
 
 
             return "redirect:/usuario/"+user+"/paginaPrincipal";
@@ -200,7 +191,7 @@ public class UsuarioController extends ProyectoTawController {
             return "redirect:/";
         }else {*/
 
-            this.usuarioService.insertarProducto(user, producto);
+            super.getUsuarioService().insertarProducto(user, producto);
 
             return "redirect:/usuario/"+user+"/paginaPrincipal";
        // }
@@ -218,7 +209,30 @@ public class UsuarioController extends ProyectoTawController {
         //}
     }
 
+    @GetMapping("/{idUsuario}/notificaciones")
+    public String notificaciones(@PathVariable("idUsuario") Integer idUsuario, Model model, HttpSession session){
+        if (super.redirigirUsuario("Estandar", session)) {
+            return "redirect:/";
+        } else {
+            UsuarioDTO usuario = super.getUsuarioService().find(idUsuario);
+            List<NotificacionDTO> notificaciones = this.notificacionService.findNotificacionesByUsuario(idUsuario);
 
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("notificaciones", notificaciones);
 
+            return "verNotificaciones";
+        }
+    }
 
+    @GetMapping("/eliminarNotificacion")
+    public String eliminarNotificacion(@RequestParam("id") Integer idNotificacion, @RequestParam("idUsuario") Integer idUsuario, Model model, HttpSession session) {
+        if (super.redirigirUsuario("Estandar", session)) {
+            return "redirect:/";
+        } else {
+
+            this.notificacionService.remove(idNotificacion);
+
+            return "redirect:/usuario/" + idUsuario + "/notificaciones";
+        }
+    }
 }

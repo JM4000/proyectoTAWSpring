@@ -41,8 +41,8 @@ public class NotificacionService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<NotificacionDTO> findNotificacionesByUsuario(int idUsuario){
-        return toDTOList(notificacionRepository.findAllByDueno(idUsuario));
+    public List<NotificacionDTO> findNotificacionesByUsuario(Integer idUsuario){
+        return toDTOList(notificacionRepository.findAllByDueno(this.usuarioRepository.findById(idUsuario).orElse(null)));
     }
 
     public void remove(int id) {

@@ -281,11 +281,11 @@ public class UsuarioService {
         for (UsuarioDTO usuario : usuarios){
             for (UsuarioDTO usuarioInList : usuariosInList){
                 if (usuario.getIdUsuario() == usuarioInList.getIdUsuario()){
-                    usuarios.remove(usuario.getIdUsuario());
+                    usuariosFinal.add(usuario);
                 }
             }
 
         }
-        return usuarios;
+        return usuariosFinal;
     }
 }
