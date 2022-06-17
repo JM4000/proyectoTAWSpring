@@ -115,7 +115,7 @@ public class MarketingController extends ProyectoTawController{
             usuarios = super.getUsuarioService().getUsuariosLike(like, filtro);
 
 
-            model.addAttribute("lista", );
+            //model.addAttribute("lista", );
             model.addAttribute("usuarios", usuarios);
             model.addAttribute("busqueda", busqueda);
 
