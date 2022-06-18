@@ -71,9 +71,9 @@ public class UsuarioController extends ProyectoTawController {
 
     @GetMapping("/{id}/paginaPrincipal")
     public String doIniciarPaginaPrincipal(@PathVariable("id") Integer id, Model model, HttpSession session){
-        /*if (super.redirigirUsuario("Estandar", session)) {
+        if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
-        }else {*/
+        }else {
             Boolean fav = false, comp = false;
             String listaTipo = "PRODUCTOS EN SUBASTA ";
             List<CategoriaDTO> categorias = this.categoriaService.findAll();
@@ -95,7 +95,7 @@ public class UsuarioController extends ProyectoTawController {
 
 
             return "paginaPrincipal";
-       // }
+        }
     }
 
 
@@ -121,9 +121,9 @@ public class UsuarioController extends ProyectoTawController {
 
     @PostMapping("/filtroPaginaPrincipal")
     public String doFiltrarPaginaPrincipal(  @ModelAttribute("filtroPaginaPrincipal") FiltroPaginaPrincipal filtroPaginaPrincipal ,Model model, HttpSession session){
-        /* if (super.redirigirUsuario("Estandar", session)) {
+        if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
-        }else {*/
+        }else {
             //DATOS
             //-----------------------------------------------------------------
             Boolean fav = false, comp = false;
@@ -167,46 +167,46 @@ public class UsuarioController extends ProyectoTawController {
 
 
             return "paginaPrincipal";
-        //}
+        }
     }
 
     @GetMapping("/{user}/{producto}/quitarFavoritos")
     public String quitarFavoritos(@PathVariable("user")int user, @PathVariable("producto") int producto, Model model, HttpSession session){
 
-        /* if (super.redirigirUsuario("Estandar", session)) {
+         if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
-        }else {*/
+        }else {
 
             super.getUsuarioService().eliminarProducto(user, producto);
 
 
             return "redirect:/usuario/"+user+"/paginaPrincipal";
-      //  }
+        }
     }
 
     @GetMapping("/{user}/{producto}/ponerFavoritos")
     public String ponerFavoritos(@PathVariable("user")int user, @PathVariable("producto") int producto, Model model, HttpSession session){
 
-         /* if (super.redirigirUsuario("Estandar", session)) {
+         if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
-        }else {*/
+        }else {
 
             super.getUsuarioService().insertarProducto(user, producto);
 
             return "redirect:/usuario/"+user+"/paginaPrincipal";
-       // }
+        }
     }
 
     @GetMapping("/{user}/{producto}/quitarComprados")
     public String quitarComprados(@PathVariable("user")int user, @PathVariable("producto") int producto, Model model, HttpSession session){
 
-        /* if (super.redirigirUsuario("Estandar", session)) {
+         if (super.redirigirUsuario("Estandar", session)) {
             return "redirect:/";
-        }else {*/
+        }else {
             this.productoService.eliminarComprado(producto);
 
             return "redirect:/usuario/"+user+"/paginaPrincipal";
-        //}
+        }
     }
 
     @GetMapping("/{idUsuario}/notificaciones")
