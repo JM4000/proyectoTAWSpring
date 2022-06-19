@@ -58,15 +58,15 @@ public class UsuarioController extends ProyectoTawController {
 
     @GetMapping("/{id}/misProductos")
     public String doListarMisProductos(@PathVariable("id") Integer id, Model model, HttpSession session){
-       /* if(super.redirigirUsuario("Estandar", session)){
+        if(super.redirigirUsuario("Estandar", session)){
             return"redirect:/";
-        }else{ */
+        }else{
             List<ProductoDTO> productos = this.productoService.findAll();
             model.addAttribute("busqueda", new Busqueda());
             model.addAttribute("productos",productos);
             model.addAttribute("errorCategorias","");
             return "listaProductosEnVenta";
-      /*  }*/
+        }
     }
 
     @GetMapping("/{id}/paginaPrincipal")
@@ -101,9 +101,9 @@ public class UsuarioController extends ProyectoTawController {
 
     @PostMapping("/filtroMisProductos")
     public String doFiltradoMisProductos(Model model, HttpSession session, @ModelAttribute("busqueda")Busqueda busqueda){
-    //    if (super.redirigirUsuario("Estandar", session)) {
-      //      return "redirect:/";
-       // } else {
+        if (super.redirigirUsuario("Estandar", session)) {
+            return "redirect:/";
+        } else {
 
             List<ProductoDTO> productos;
             String like = (String) busqueda.getBusqueda();
@@ -116,7 +116,7 @@ public class UsuarioController extends ProyectoTawController {
 
 
             return "listaProductosEnVenta";
-        //}
+        }
     }
 
     @PostMapping("/filtroPaginaPrincipal")
