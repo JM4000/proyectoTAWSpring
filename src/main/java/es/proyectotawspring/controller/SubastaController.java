@@ -95,7 +95,10 @@ public class SubastaController extends ProyectoTawController{
 
 
             ProductoDTO p = s.getProducto();
-            this.subastaService.editarCompradorSubasta(p.getIdProducto(),s.getMayorPostor().getIdUsuario());
+            if(s.getMayorPostor()!=null){
+                this.subastaService.editarCompradorSubasta(p.getIdProducto(),s.getMayorPostor().getIdUsuario());
+
+            }
 
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
             return "redirect:/usuario/"+usuario.getIdUsuario()+"/misProductos";
